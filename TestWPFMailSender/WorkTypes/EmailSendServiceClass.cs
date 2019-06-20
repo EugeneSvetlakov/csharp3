@@ -5,20 +5,13 @@ using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WPFTestMailSender
+namespace TestWPFMailSender.WorkTypes
 {
     public enum sendStatus { Unknown, Processing, Ok, Error}
 
     public class EmailSendServiceClass
     {
-        public EmailSendServiceClass()
-        {
-            this.From = defaultMessage.mailFrom;
-            this.To = defaultMessage.mailTo;
-            this.Subject = defaultMessage.subject;
-            this.Body = defaultMessage.body;
-            this.client = defaultMailServer.defClient;
-        }
+        
         public EmailSendServiceClass(
             MailAddress from, 
             MailAddress to, 
