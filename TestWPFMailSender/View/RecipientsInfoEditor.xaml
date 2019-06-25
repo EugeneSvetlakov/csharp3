@@ -1,0 +1,56 @@
+﻿<UserControl x:Class="MailSender.View.RecipientsInfoEditor"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:local="clr-namespace:MailSender.View"
+             xmlns:view="clr-namespace:MailSender.ViewModel"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+             DataContext="{Binding MainWindowViewModel, Source={StaticResource Locator}}">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding CanSaveRecipientCommandExecuted}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <DockPanel>
+        <DockPanel>
+            <ListBox DockPanel.Dock="Left"
+                     Width="200" Margin="10"
+                     ItemsSource="{Binding Recipients}"
+                     SelectedItem="{Binding CurrentRecipient}"
+                     >
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock Text="{Binding Name}"/>
+                            <TextBlock Text="{Binding MailAddr}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <DockPanel LastChildFill="False">
+                <StackPanel Margin="5" Orientation="Horizontal" DockPanel.Dock="Top">
+                    <TextBlock Text="Имя:" FontWeight="Bold" Foreground="Purple" Margin="0,0,5,0" VerticalAlignment="Center"/>
+                    <TextBox MinWidth="80" Text="{Binding CurrentRecipient.Name}"/>
+                </StackPanel>
+                <StackPanel Margin="5" Orientation="Horizontal" DockPanel.Dock="Top">
+                    <TextBlock Text="Email:" FontWeight="Bold" Foreground="Purple" Margin="0,0,5,0" VerticalAlignment="Center"/>
+                    <TextBox MinWidth="80" Text="{Binding CurrentRecipient.MailAddr}"/>
+                </StackPanel>
+                <StackPanel Margin="5" DockPanel.Dock="Top">
+                    <TextBlock Text="Комментарий:" FontWeight="Bold" Foreground="Purple" Margin="0,5"/>
+                    <TextBox Text="{Binding CurrentRecipient.Comment}"/>
+                </StackPanel>
+                <StackPanel Margin="10" DockPanel.Dock="Top" Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Button Content="Сохранить изменения" Margin="0,0,10,0" 
+                            Command="{Binding SaveRecipientCommand}"
+                            CommandParameter="{Binding CurrentRecipient}"
+                            />
+                    <Button Content="Отменить все изменения" Command="{Binding UpdateDataCommand}"/>
+                </StackPanel>
+            </DockPanel>
+        </DockPanel>
+    </DockPanel>
+</UserControl>

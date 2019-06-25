@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="MailSenderDb" Class="MailSenderDbContextDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=MailSenderDb;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False" SettingsObjectName="MailSender.Properties.Settings" SettingsPropertyName="MailSenderDbConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Recipients" Member="Recipients">
+    <Type Name="Recipients">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(150)" CanBeNull="true" />
+      <Column Name="MailAddr" Type="System.String" DbType="NVarChar(250)" CanBeNull="true" />
+      <Column Name="Comment" Type="System.String" DbType="NVarChar(550)" CanBeNull="true" />
+    </Type>
+  </Table>
+</Database>
