@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TestWPFMailSender.WorkTypes
+namespace MailSender.WorkTypes
 {
     /// <summary>
     /// Класс основа для классов Получатель/Отправитель

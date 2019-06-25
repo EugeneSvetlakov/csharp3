@@ -5,7 +5,7 @@ using System.Net;
 using System.Net.Mail;
 using System.Windows.Media;
 
-namespace WPFTestMailSender
+namespace MailSender
 {
     public partial class WpfMailSender
     {

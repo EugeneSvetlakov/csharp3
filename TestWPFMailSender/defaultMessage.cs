@@ -5,7 +5,7 @@ using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WPFTestMailSender
+namespace MailSender
 {
     public static class defaultMessage
     {

@@ -5,7 +5,7 @@ using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TestWPFMailSender.WorkTypes
+namespace MailSender.WorkTypes
 {
     public enum sendStatus { Unknown, Processing, Ok, Error}
 
