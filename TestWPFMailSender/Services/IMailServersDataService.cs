@@ -7,14 +7,14 @@ using MailSender.Data.Linq2Sql;
 
 namespace MailSender.Services
 {
-    public interface IRecipientsDataService
+    public interface IMailServersDataService
     {
-        IEnumerable<Recipient> GetAll();
+        IEnumerable<MailServer> GetAll();
 
-        void Create(Recipient item);
+        void Create(MailServer item);
 
-        void Update(Recipient item);
+        void Update(MailServer item);
 
-        void Delete(Recipient item);
+        void Delete(MailServer item);
     }
 }

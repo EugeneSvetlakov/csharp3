@@ -5,7 +5,7 @@ using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MailSender.WorkTypes
+namespace MailSender.Data.Memory
 {
     public enum sendStatus { Unknown, Processing, Ok, Error}
 

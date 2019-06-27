@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MailSender.WorkTypes
+namespace MailSender.Data.Memory
 {
     /// <summary>
     /// Класс основа для классов Получатель/Отправитель

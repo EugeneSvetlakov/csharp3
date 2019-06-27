@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MailSender.WorkTypes
+namespace MailSender.Data.Memory
 {
     /// <summary>
     /// Класс экземпляра задания Планировщика рассылки
@@ -12,7 +12,7 @@ namespace MailSender.WorkTypes
     class TaskPost
     {
         string id;
-        DateTime CreateDate;
+        DateTime CreateDate = DateTime.Now;
         DateTime SendDate;
         MailTemplate mailTemplate;
         MailServer mailServer;
