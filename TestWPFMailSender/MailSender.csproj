@@ -110,6 +110,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Data\BaseEntityes\Entity.cs" />
+    <Compile Include="Data\BaseEntityes\Human.cs" />
+    <Compile Include="Data\BaseEntityes\NamedEntity.cs" />
     <Compile Include="Data\Encryptor\StringEncryptor.cs" />
     <Compile Include="Data\Linq2Sql\MailSenderDbContext.designer.cs">
       <AutoGen>True</AutoGen>
@@ -117,13 +120,19 @@
       <DependentUpon>MailSenderDbContext.dbml</DependentUpon>
     </Compile>
     <Compile Include="Data\Linq2Sql\Recipient.cs" />
-    <Compile Include="Services\IMailTemplatesDataService.cs" />
-    <Compile Include="Services\IMailServersDataService.cs" />
-    <Compile Include="Services\InMemory\RecipientsDataServicesInMemory.cs" />
-    <Compile Include="Services\ISendersDataService.cs" />
+    <Compile Include="Data\Sender.cs" />
+    <Compile Include="Data\Recipient.cs" />
+    <Compile Include="Services\IDataService.cs" />
+    <Compile Include="Services\IMailMessageDataService.cs" />
+    <Compile Include="Services\IMailSenderService.cs" />
+    <Compile Include="Services\InMemory\DataInMemory.cs" />
+    <Compile Include="Services\InMemory\MailMessagesDataInMemory.cs" />
+    <Compile Include="Services\InMemory\SendersDataInMemory.cs" />
+    <Compile Include="Services\InMemory\ServersDataInMemory.cs" />
+    <Compile Include="Services\IServersDataService.cs" />
+    <Compile Include="Services\InMemory\RecipientsDataInMemory.cs" />
     <Compile Include="Services\IRecipientsDataService.cs" />
-    <Compile Include="Services\IShedulerService.cs" />
-    <Compile Include="Services\ITasksService.cs" />
+    <Compile Include="Services\ISendersDataService.cs" />
     <Compile Include="Services\Linq2Sql\MailTemplatesDataServicesLinq2Sql.cs" />
     <Compile Include="Services\Linq2Sql\MailServersDataServicesLinq2Sql.cs" />
     <Compile Include="Services\Linq2Sql\SendersDataServicesLinq2Sql.cs" />
@@ -138,8 +147,7 @@
     <Compile Include="View\RecipientsInfoViewer.xaml.cs">
       <DependentUpon>RecipientsInfoViewer.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Data\Memory\MailMan.cs" />
-    <Compile Include="Data\Memory\MailServer.cs" />
+    <Compile Include="Data\Server.cs" />
     <Compile Include="defaultMessage.cs" />
     <Compile Include="Data\Memory\EmailSendServiceClass.cs" />
     <Compile Include="defaultMailServer.cs" />
@@ -159,7 +167,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Data\Memory\MailTemplate.cs" />
+    <Compile Include="Data\MailMessage.cs" />
     <Compile Include="Data\Memory\TaskPost.cs" />
     <Compile Include="WpfMailSender.xaml.cs">
       <DependentUpon>WpfMailSender.xaml</DependentUpon>

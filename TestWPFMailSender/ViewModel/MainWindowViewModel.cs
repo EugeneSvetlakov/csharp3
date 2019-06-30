@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using MailSender.Services;
-using MailSender.Data.Linq2Sql;
+using MailSender.Data;
 using System.Windows.Input;
 using GalaSoft.MvvmLight.CommandWpf;
 using System.ComponentModel;
@@ -19,8 +19,9 @@ namespace MailSender.ViewModel
         public MainWindowViewModel(
             IRecipientsDataService RecipientsDataService, 
             ISendersDataService SendersDataService,
-            IMailServersDataService MailServersDataService,
-            IMailTemplatesDataService MailTemplatesDataService)
+            IServersDataService MailServersDataService,
+            IMailMessageDataService MailTemplatesDataService,
+            IMailSenderService MailSenderService)
         {
             _RecipientsDataService = RecipientsDataService;
             GetRecipientsDataCommand = new RelayCommand(OnGetRecipientsDataCommandExecuted, CanGetRecipientsDataCommandExecuted);
@@ -39,16 +40,19 @@ namespace MailSender.ViewModel
             _MailServersDataService = MailServersDataService;
             UpdateMailServersCommand = new RelayCommand(OnUpdateMailServersCommandExecuted, CanUpdateMailServersCommandExecuted);
             CreateMailServersCommand = new RelayCommand(OnCreateMailServersCommandExecuted, CanCreateMailServersCommandExecuted);
-            SaveMailServersCommand = new RelayCommand<MailServer>(OnSaveMailServersCommandExecuted, CanSaveMailServersCommandExecuted);
-            DeleteMailServerCommand = new RelayCommand<MailServer>(OnDeleteMailServerCommandExecuted, CanDeleteMailServerCommandExecuted);
+            SaveMailServersCommand = new RelayCommand<Server>(OnSaveMailServersCommandExecuted, CanSaveMailServersCommandExecuted);
+            DeleteMailServerCommand = new RelayCommand<Server>(OnDeleteMailServerCommandExecuted, CanDeleteMailServerCommandExecuted);
             //UpdateMailServersData();
 
             _MailTemplatesDataService = MailTemplatesDataService;
             UpdateMailTemplatesCommand = new RelayCommand(OnUpdateMailTemplatesCommandExecuted, CanUpdateMailTemplatesCommandExecuted);
             CreateMailTemplateCommand = new RelayCommand(OnCreateMailTemplateCommandExecuted, CanCreateMailTemplateCommandExecuted);
-            SaveMailTemplatesCommand = new RelayCommand<MailTemplate>(OnSaveMailTemplatesCommandExecuted, CanSaveMailTemplatesCommandExecuted);
-            DeleteMailTemplateCommand = new RelayCommand<MailTemplate>(OnDeleteMailTemplateCommandExecuted, CanDeleteMailTemplateCommandExecuted);
+            SaveMailTemplatesCommand = new RelayCommand<MailMessage>(OnSaveMailTemplatesCommandExecuted, CanSaveMailTemplatesCommandExecuted);
+            DeleteMailTemplateCommand = new RelayCommand<MailMessage>(OnDeleteMailTemplateCommandExecuted, CanDeleteMailTemplateCommandExecuted);
             //GetMailTemplates();
+
+            _MailSenderService = MailSenderService;
+            //todo Commands for MailSenderService
         }
         #endregion
 
@@ -106,9 +110,10 @@ namespace MailSender.ViewModel
             var new_recipient = new Recipient()
             {
                 Name = "New Recipient",
-                MailAddr = "newaddres@localhost"
+                Address = "newaddres@localhost",
+                Comment = ""
             };
-            _RecipientsDataService.Create(new_recipient);
+            _RecipientsDataService.Add(new_recipient);
             GetRecipientsData();
             CurrentRecipient = new_recipient;
         }
@@ -122,7 +127,7 @@ namespace MailSender.ViewModel
 
         private void OnSaveRecipientCommandExecuted(Recipient item)
         {
-            _RecipientsDataService.Update(item);
+            _RecipientsDataService.Edit(item);
         }
 
         public ICommand DeleteRecipientCommand { get; }
@@ -183,9 +188,10 @@ namespace MailSender.ViewModel
             var new_item = new Sender()
             {
                 Name = "NewName",
-                MailAddr = "NewAddr@localhost"
+                Address = "NewAddr@localhost",
+                Comment = ""
             };
-            _SendersDataService.Create(new_item);
+            _SendersDataService.Add(new_item);
             GetSenders();
             CurrentSender = new_item;
         }
@@ -199,7 +205,7 @@ namespace MailSender.ViewModel
 
         private void OnSaveSendersCommandExecuted(Sender item)
         {
-            _SendersDataService.Update(item);
+            _SendersDataService.Edit(item);
         }
 
         public ICommand DeleteSenderCommand { get; }
@@ -218,21 +224,21 @@ namespace MailSender.ViewModel
         #endregion
 
         #region MailTemplates
-        private readonly IMailTemplatesDataService _MailTemplatesDataService;
-        private ObservableCollection<MailTemplate> _MailTemplates;
-        public ObservableCollection<MailTemplate> MailTemplates
+        private readonly IMailMessageDataService _MailTemplatesDataService;
+        private ObservableCollection<MailMessage> _MailTemplates;
+        public ObservableCollection<MailMessage> MailTemplates
         {
             get => _MailTemplates;
             private set => Set(ref _MailTemplates, value);
         }
         public void GetMailTemplates()
         {
-            MailTemplates = new ObservableCollection<MailTemplate>(_MailTemplatesDataService.GetAll());
+            MailTemplates = new ObservableCollection<MailMessage>(_MailTemplatesDataService.GetAll());
         }
 
-        private MailTemplate _CurrentMailTemplate;
+        private MailMessage _CurrentMailTemplate;
 
-        public MailTemplate CurrentMailTemplate
+        public MailMessage CurrentMailTemplate
         {
             get => _CurrentMailTemplate;
             set => Set(ref _CurrentMailTemplate, value);
@@ -253,36 +259,36 @@ namespace MailSender.ViewModel
 
         private void OnCreateMailTemplateCommandExecuted()
         {
-            var new_item = new MailTemplate()
+            var new_item = new MailMessage()
             {
-                subject = "NewSubject",
-                message = "NewMessage"
+                Subject = "NewSubject",
+                Body = "NewMessage"
             };
-            _MailTemplatesDataService.Create(new_item);
+            _MailTemplatesDataService.Add(new_item);
             GetMailTemplates();
             CurrentMailTemplate = new_item;
         }
 
         public ICommand SaveMailTemplatesCommand { get; }
 
-        private bool CanSaveMailTemplatesCommandExecuted(MailTemplate item)
+        private bool CanSaveMailTemplatesCommandExecuted(MailMessage item)
         {
             return item != null;
         }
 
-        private void OnSaveMailTemplatesCommandExecuted(MailTemplate item)
+        private void OnSaveMailTemplatesCommandExecuted(MailMessage item)
         {
-            _MailTemplatesDataService.Update(item);
+            _MailTemplatesDataService.Edit(item);
         }
 
         public ICommand DeleteMailTemplateCommand { get; }
 
-        private bool CanDeleteMailTemplateCommandExecuted(MailTemplate item)
+        private bool CanDeleteMailTemplateCommandExecuted(MailMessage item)
         {
             return item != null;
         }
 
-        private void OnDeleteMailTemplateCommandExecuted(MailTemplate item)
+        private void OnDeleteMailTemplateCommandExecuted(MailMessage item)
         {
             _MailTemplatesDataService.Delete(item);
             GetMailTemplates();
@@ -291,19 +297,19 @@ namespace MailSender.ViewModel
         #endregion
 
         #region MailServers
-        private readonly IMailServersDataService _MailServersDataService;
+        private readonly IServersDataService _MailServersDataService;
 
-        private ObservableCollection<MailServer> _MailServers;
+        private ObservableCollection<Server> _MailServers;
 
-        public ObservableCollection<MailServer> MailServers
+        public ObservableCollection<Server> MailServers
         {
             get => _MailServers;
             private set => Set(ref _MailServers, value);
         }
 
-        private MailServer _CurrentMailServer;
+        private Server _CurrentMailServer;
 
-        public MailServer CurrentMailServer
+        public Server CurrentMailServer
         {
             get => _CurrentMailServer;
             set => Set(ref _CurrentMailServer, value);
@@ -311,7 +317,7 @@ namespace MailSender.ViewModel
 
         public void GetMailServersData()
         {
-            MailServers = new ObservableCollection<MailServer>(_MailServersDataService.GetAll());
+            MailServers = new ObservableCollection<Server>(_MailServersDataService.GetAll());
         }
 
         public ICommand UpdateMailServersCommand { get; }
@@ -329,41 +335,50 @@ namespace MailSender.ViewModel
 
         private void OnCreateMailServersCommandExecuted()
         {
-            var new_item = new MailServer()
+            var new_item = new Server()
             {
-                Host = "NewHost",
+                Name = "HostName",
+                Address = "NewHost",
                 Port = 25,
-                Ssl = "true"
+                Ssl = true,
+                Login = "user_name",
+                Pwd = "user_password",
+                Comment = ""
             };
-            _MailServersDataService.Create(new_item);
+            _MailServersDataService.Add(new_item);
             GetMailServersData();
             CurrentMailServer = new_item;
         }
 
         public ICommand SaveMailServersCommand { get; }
 
-        private bool CanSaveMailServersCommandExecuted(MailServer item)
+        private bool CanSaveMailServersCommandExecuted(Server item)
         {
             return item != null;
         }
 
-        private void OnSaveMailServersCommandExecuted(MailServer item)
+        private void OnSaveMailServersCommandExecuted(Server item)
         {
-            _MailServersDataService.Update(item);
+            _MailServersDataService.Edit(item);
         }
 
         public ICommand DeleteMailServerCommand { get; }
 
-        private bool CanDeleteMailServerCommandExecuted(MailServer item)
+        private bool CanDeleteMailServerCommandExecuted(Server item)
         {
             return item != null;
         }
 
-        private void OnDeleteMailServerCommandExecuted(MailServer item)
+        private void OnDeleteMailServerCommandExecuted(Server item)
         {
             _MailServersDataService.Delete(item);
             GetMailServersData();
         }
+
+        #endregion
+
+        #region SmtpMailSenderService
+        private readonly IMailSenderService _MailSenderService;
 
         #endregion
     }

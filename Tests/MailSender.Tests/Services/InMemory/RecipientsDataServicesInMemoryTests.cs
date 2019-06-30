@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Text;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MailSender.Services;
 using MailSender.Services.InMemory;
-using System.Collections.ObjectModel;
-using MailSender.Data.Linq2Sql;
+using MailSender.Data;
 
 namespace MailSender.Tests.Services.InMemory
 {
@@ -69,19 +69,19 @@ namespace MailSender.Tests.Services.InMemory
             // Arrange
             IEnumerable<Recipient> expected_collection = new ObservableCollection<Recipient>
             {
-                new Recipient() {id = 1, Name = "Валенков", MailAddr = "valenkov@localhost", Comment = ""},
-                new Recipient() {id = 2, Name = "Ботинков", MailAddr = "botinkov@localhost", Comment = ""},
-                new Recipient() {id = 3, Name = "Тапочков", MailAddr = "tapochkov@localhost", Comment = ""}
+                new Recipient() {id = 1, Name = "Валенков", Address = "valenkov@localhost", Comment = ""},
+                new Recipient() {id = 2, Name = "Ботинков", Address = "botinkov@localhost", Comment = ""},
+                new Recipient() {id = 3, Name = "Тапочков", Address = "tapochkov@localhost", Comment = ""}
             };
 
             Recipient TryAddRecipient = 
-                new Recipient() { id = 2, Name = "Ботинков", MailAddr = "botinkov@localhost", Comment = "" };
+                new Recipient() { id = 2, Name = "Ботинков", Address = "botinkov@localhost", Comment = "" };
 
-            RecipientsDataServicesInMemory _RecipientsDataServicesInMemory = new RecipientsDataServicesInMemory();
+            RecipientsDataInMemory _RecipientsDataServicesInMemory = new RecipientsDataInMemory();
 
             var _collection = _RecipientsDataServicesInMemory.GetAll();
             // Act
-            _RecipientsDataServicesInMemory.Create(TryAddRecipient);
+            _RecipientsDataServicesInMemory.Add(TryAddRecipient);
             var actual_collection = _RecipientsDataServicesInMemory.GetAll();
 
             // Accert

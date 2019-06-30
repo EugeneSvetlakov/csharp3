@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MailSender.Data;
 
 namespace MailSender.Services
 {
-    interface ITasksService
-    {
-    }
+    public interface IMailMessageDataService : IDataService<MailMessage> { }
 }

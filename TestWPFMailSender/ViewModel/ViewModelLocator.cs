@@ -46,15 +46,17 @@ namespace MailSender.ViewModel
             ////    SimpleIoc.Default.Register<IDataService, DataService>();
             ////}
 
-            SimpleIoc.Default.Register(() => new MailSenderDbContext());
-            SimpleIoc.Default.Register<IRecipientsDataService, RecipientsDataServicesInMemory>();
-            //SimpleIoc.Default.Register<IRecipientsDataService, RecipientsDataServicesLinq2Sql>();
-            SimpleIoc.Default.Register<IMailServersDataService, MailServersDataServicesLinq2Sql>();
-            SimpleIoc.Default.Register<ISendersDataService, SendersDataServicesLinq2Sql>();
-            SimpleIoc.Default.Register<IMailTemplatesDataService, MailTemplatesDataServicesLinq2Sql>();
+            var services = SimpleIoc.Default;
+            services.Register(() => new MailSenderDbContext());
+            services.Register<IRecipientsDataService, RecipientsDataInMemory>();
+            //services.Register<IRecipientsDataService, RecipientsDataServicesLinq2Sql>();
+            services.Register<IServersDataService, MailServersDataServicesLinq2Sql>();
+            services.Register<ISendersDataService, SendersDataServicesLinq2Sql>();
+            services.Register<IMailMessageDataService, MailTemplatesDataServicesLinq2Sql>();
+            services.Register<IMailSenderService, SmtpMailSenderService>();
 
-            SimpleIoc.Default.Register<MainViewModel>();
-            SimpleIoc.Default.Register<MainWindowViewModel>();
+            services.Register<MainViewModel>();
+            services.Register<MainWindowViewModel>();
         }
 
         public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();

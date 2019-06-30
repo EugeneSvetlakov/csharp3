@@ -39,7 +39,7 @@ namespace MailSender.Data.Memory
         {
             try
             {
-                using (var message = new MailMessage())
+                using (var message = new System.Net.Mail.MailMessage())
                 {
                     message.From = this.From;
                     message.To.Add(this.To);

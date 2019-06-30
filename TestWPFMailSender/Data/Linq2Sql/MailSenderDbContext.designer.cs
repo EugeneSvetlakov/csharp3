@@ -117,7 +117,7 @@ namespace MailSender.Data.Linq2Sql
 		
 		private string _Host;
 		
-		private System.Nullable<int> _Port;
+		private int _Port;
 		
 		private string _Ssl;
 		
@@ -189,7 +189,7 @@ namespace MailSender.Data.Linq2Sql
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Port", DbType="Int")]
-		public System.Nullable<int> Port
+		public int Port
 		{
 			get
 			{
