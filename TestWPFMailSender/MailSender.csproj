@@ -124,6 +124,7 @@
     <Compile Include="Data\Recipient.cs" />
     <Compile Include="Services\IDataService.cs" />
     <Compile Include="Services\IMailMessageDataService.cs" />
+    <Compile Include="Services\IMailSender.cs" />
     <Compile Include="Services\IMailSenderService.cs" />
     <Compile Include="Services\InMemory\DataInMemory.cs" />
     <Compile Include="Services\InMemory\MailMessagesDataInMemory.cs" />
@@ -137,6 +138,8 @@
     <Compile Include="Services\Linq2Sql\MailServersDataServicesLinq2Sql.cs" />
     <Compile Include="Services\Linq2Sql\SendersDataServicesLinq2Sql.cs" />
     <Compile Include="Services\Linq2Sql\RecipientsDataServicesLinq2Sql.cs" />
+    <Compile Include="Services\SmtpMailSender.cs" />
+    <Compile Include="Services\SmtpMailSenderService.cs" />
     <Compile Include="ValidationRules\RegExValidationRule.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
