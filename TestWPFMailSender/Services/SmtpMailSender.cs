@@ -60,6 +60,12 @@ namespace MailSender.Services
             //        IsBackground = true
             //    }.Start();
             //}
+
+            foreach (var recipient in To)
+            {
+                var current_recipient = recipient;
+                ThreadPool.QueueUserWorkItem(p => Send(Message, From, current_recipient));
+            }
         }
     }
 }
