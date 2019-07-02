@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="MailSenderDb" Class="MailSenderDbContextDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=MailSenderDb;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False" SettingsObjectName="MailSender.Properties.Settings" SettingsPropertyName="MailSenderDbConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.MailServers" Member="MailServers">
+    <Type Name="MailServers">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Host" Type="System.String" DbType="NVarChar(150)" CanBeNull="true" />
+      <Column Name="Port" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Ssl" Type="System.String" DbType="NVarChar(5)" CanBeNull="true" />
+      <Column Name="Login" Type="System.String" DbType="NVarChar(250)" CanBeNull="true" />
+      <Column Name="Pwd" Type="System.String" DbType="NVarChar(250)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.MailTemplates" Member="MailTemplates">
+    <Type Name="MailTemplates">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="subject" Type="System.String" DbType="NVarChar(250)" CanBeNull="true" />
+      <Column Name="message" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Recipients" Member="Recipients">
+    <Type Name="Recipients">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(150)" CanBeNull="true" />
+      <Column Name="MailAddr" Type="System.String" DbType="NVarChar(250)" CanBeNull="true" />
+      <Column Name="Comment" Type="System.String" DbType="NVarChar(550)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Senders" Member="Senders">
+    <Type Name="Senders">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(150)" CanBeNull="true" />
+      <Column Name="MailAddr" Type="System.String" DbType="NVarChar(250)" CanBeNull="true" />
+      <Column Name="Comment" Type="System.String" DbType="NVarChar(550)" CanBeNull="true" />
+    </Type>
+  </Table>
+</Database>
