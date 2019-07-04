@@ -31,7 +31,7 @@ namespace lesson5
             Console.ReadKey();
             Console.WriteLine($"Конвертация {count_lines} строк в исходном csv-файле запущена.");
 
-            Thread thread_txt = new Thread(() => csvToTxt.ToTxt());
+            Thread thread_txt = new Thread(() => csvToTxt.Convert(count_lines));
             thread_txt.Start();
             thread_txt.Join();
 

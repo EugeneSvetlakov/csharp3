@@ -8,9 +8,9 @@ namespace lesson5
 {
     static class SummaN
     {
-        public static int? GetSumm(int num)
+        public static int GetSumm(int num)
         {
-            if (num < 0) return null;
+            if (num < 0) throw new ArgumentOutOfRangeException();
             int res = 0;
             for (var i = 0; i <= num; i++)
             {
@@ -18,7 +18,5 @@ namespace lesson5
             }
             return res;
         }
-
-
     }
 }

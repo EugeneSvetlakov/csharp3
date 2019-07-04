@@ -31,32 +31,43 @@ namespace lesson5
         public string TxtFile { get; set; }
         public int LinesToRead { get; set; } = 10000;
         public char Separator { get; set; }
-        //public string InputString { get; set; }
-        //public string ParsedString { get; set; }
 
         /// <summary>
-        /// Преобразование csv-файла в txt-файл
+        /// Конвертация файла из csv в txt
         /// </summary>
-        public void ToTxt()
+        /// <param name="lastline"></param>
+        public void Convert(int lastline)
         {
-            //var srcEncoding = Encoding.GetEncoding(1251);
-            //string line = string.Empty;
-            //StreamReader file = 
-            //    new StreamReader($@"{this.CsvFile}", encoding: srcEncoding);
-            //while ((line = file.ReadLine()) != null)
-            //{
-            //    WriteTxt(ParceLine(line), this.TxtFile);
-            //}
-            //file.Close();
+            string line;
+            List<string> ListStrings = new List<string>();
 
-            //Цикл чтения файла кусками заданной в this.LinesToRead размерности
-            for (int i = 0; i <= LinesInCsv(); i += this.LinesToRead)
+            using (TextReader reader = new StreamReader($@"{this.CsvFile}", encoding: Encoding.GetEncoding(1251)))
             {
-                int current_i = i;
-                var thread_i = new Thread(() => BatchPart(current_i));
-                thread_i.Start();
-                //thread_i.IsBackground = true;
-                thread_i.Join();
+                int current_line = 0;
+                int counter = 1;
+                ListStrings.Clear();
+
+                while ((line = reader.ReadLine()) != null)
+                {
+                    
+                    ListStrings.Add(line);
+                    current_line++;
+                    if (current_line == lastline)
+                    {
+                        var thread_i = new Thread(() => BatchPart(ListStrings));
+                        thread_i.Start();
+                        thread_i.Join();
+                        ListStrings.Clear();
+                    }
+                    else if (current_line > this.LinesToRead * counter)
+                    {
+                        var thread_i = new Thread(() => BatchPart(ListStrings));
+                        thread_i.Start();
+                        thread_i.Join();
+                        ListStrings.Clear();
+                        counter++;
+                    }
+                }
             }
         }
 
@@ -68,6 +79,22 @@ namespace lesson5
         {
             // Полученеи списка строк из csv-файла
             var currentLines = ReadLines(i);
+
+            // Получение преобразованного списка строк
+            var parcedCurrentLines = ParceList(currentLines);
+
+            // Запись преобразованного списка строк в txt-файл
+            WriteStrings(parcedCurrentLines);
+        }
+        
+        /// <summary>
+        /// Обработка i-го куска файла
+        /// </summary>
+        /// <param name="i"></param>
+        private void BatchPart(List<string> itemList)
+        {
+            // Полученеи списка строк из csv-файла
+            var currentLines = itemList;
 
             // Получение преобразованного списка строк
             var parcedCurrentLines = ParceList(currentLines);
@@ -166,26 +193,28 @@ namespace lesson5
         {
             int count = 0;
             string line;
-            TextReader reader = new StreamReader(this.CsvFile);
-            while ((line = reader.ReadLine()) != null)
+            using (TextReader reader = new StreamReader(this.CsvFile))
             {
-                count++;
+                while ((line = reader.ReadLine()) != null)
+                {
+                    count++;
+                }
+                return count;
             }
-            reader.Close();
-            return count;
         }
 
         public int LinesInTxt()
         {
             int count = 0;
             string line;
-            TextReader reader = new StreamReader(this.TxtFile);
-            while ((line = reader.ReadLine()) != null)
+            using (TextReader reader = new StreamReader(this.TxtFile))
             {
-                count++;
+                while ((line = reader.ReadLine()) != null)
+                {
+                    count++;
+                }
+                return count;
             }
-            reader.Close();
-            return count;
         }
 
         /// <summary>
