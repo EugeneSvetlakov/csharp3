@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -40,11 +42,25 @@ namespace lesson6
             // выполняющее вышеуказанные действия над числами и сохраняющее результат в файл result.dat. 
             // Количество файлов в директории заведомо много.
 
-            string path = @"c:\tmp";
-            string searchPattern = "*.pdf";
-            string[] files = FileWork.FileNames(path);
-            string[] files_pdf = FileWork.FileNames(path, searchPattern);
+            string HomePath = @"..\..\test_data";
+            string ResultFile = @"result.dat";
+            string SearchPattern = "*.txt";
+            #region Генерация тестовых файлов
+            //Random rnd = new Random();
+            //string tmp;
+            //for (int i = 0; i < 1000; i++)
+            //{
+            //    var oper = rnd.Next(1, 2);
+            //    var num1 = (decimal)(rnd.NextDouble() * 100);
+            //    var num2 = (decimal)(rnd.NextDouble() * 100);
+            //    tmp = $"{ oper} {num1} {num2}";
+            //    File.AppendAllText($@"{HomePath}\file_0{i}.txt", tmp);
+            //}
+            #endregion
 
+            FileWork fileWork = 
+                new FileWork($@"{HomePath}", $@"{HomePath}\{ResultFile}", SearchPattern);
+            fileWork.WriteResults();
 
             Pause();
         }
