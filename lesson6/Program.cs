@@ -1,18 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Management;
+using Microsoft.VisualBasic.Devices;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace lesson6
 {
+
+
     class Program
     {
         static void Main(string[] args)
         {
+            #region Получение информации о памяти в Мегабайтах (Мб)
+            var AvailablePhysicalMemory = (new ComputerInfo().AvailablePhysicalMemory) / 1048576;
+            var TotalPhysicalMemory = (new ComputerInfo().TotalPhysicalMemory) / 1048576;
+            var currentProc = Process.GetCurrentProcess().PrivateMemorySize64 / 1048576;
+            #endregion
+
+            Console.Read();
+
             #region ДЗ Задача 1.
             // Задание 1: Даны 2 двумерных матрицы. Размерность 100х100 каждая. 
             //Напишите приложение, производящее параллельное умножение матриц. 
