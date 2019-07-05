@@ -1,37 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace lesson6
 {
-    class dataFromFile
-    {
-        int _Operator;
-        decimal _Num1;
-        decimal _Num2;
-
-        public dataFromFile()
-        {
-
-        }
-
-        public dataFromFile(int Operator, decimal num1, decimal num2)
-        {
-            _Operator = Operator;
-            _Num1 = num1;
-            _Num2 = num2;
-        }
-    }
-
     class FileWork
     {
         private string _DirectoryPath;
         private string _SearchPattern = "*.txt";
         private string _ResultFile;
+        static ReaderWriterLock rwl = new ReaderWriterLock();
 
         public FileWork()
         {
@@ -47,13 +31,15 @@ namespace lesson6
         public void WriteResults()
         {
             var ListFiles = Directory.GetFiles(_DirectoryPath, _SearchPattern);
-            
+            if (File.Exists(_ResultFile)) File.Delete(_ResultFile);
             var CountFiles = ListFiles.Length;
-            List<string> Results = new List<string>();
-            int BatchAmount = 100;
+            int BatchAmount = 98;
+            var NumBatches = (int)Math.Ceiling((decimal)CountFiles / (decimal)BatchAmount);
+            Task[] ListTask = new Task[NumBatches];
             int Counter = 0;
+            int CurrentBatch = 0;
+            List<string> Results = new List<string>();
             string res;
-            TaskFactory taskFactory = new TaskFactory();
             for (int i = 0; i < CountFiles; i++)
             {
                 Counter++;
@@ -61,18 +47,45 @@ namespace lesson6
                 res = $"{fi1.Name} :: {FileWork.GetMathResult(File.ReadAllLines(ListFiles[i])[0])}";
                 Results.Add(res);
 
-                //if (Counter > BatchAmount || i == CountFiles - 1)
-                //{
-                //    taskFactory.StartNew(() =>
-                //    {
-                //        var Batch = Results;
-                //        File.AppendAllLines(_ResultFile, Batch);
-                //    });
-                //    Results.Clear();
-                //    Counter = 0;
-                //}
+                if (Counter > BatchAmount || i == CountFiles - 1)
+                {
+                    List<string> Batch = new List<string>(Results);
+                    
+                    ListTask[CurrentBatch] = new Task(() => this.WriteToResource(98, Batch));
+
+                    CurrentBatch++;
+                    Results.Clear();
+                    Counter = 0;
+                }
             }
-            File.AppendAllLines(_ResultFile, Results);
+            for (var i = CurrentBatch - 1; i >= 0; i--)
+            {
+                var iAlive = ListTask[i].Status;
+                ListTask[i].Start();
+                ListTask[i].Wait();
+
+                Thread.Sleep(50);
+            }
+        }
+
+        private void WriteToResource(int timeOut, List<string> ListToWrite)
+        {
+            try
+            {
+                rwl.AcquireWriterLock(timeOut);
+                try
+                {
+                    File.AppendAllLines(_ResultFile, ListToWrite);
+                }
+                finally
+                {
+                    rwl.ReleaseWriterLock();
+                }
+            }
+            catch (ApplicationException)
+            {
+                Debug.WriteLine("В отведенное время поток не смог записать данные в файл.");
+            }
         }
 
         public static decimal GetMathResult(string data, char Separator = ' ')
