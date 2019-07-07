@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading;
+using System.Threading.Tasks;
 using MailSender.Data;
 
 namespace MailSender.Services
@@ -66,6 +69,47 @@ namespace MailSender.Services
                 var current_recipient = recipient;
                 ThreadPool.QueueUserWorkItem(p => Send(Message, From, current_recipient));
             }
+        }
+
+        public async Task SendAsync(MailMessage Message, Sender From, Recipient To)
+        {
+            using (var server = new System.Net.Mail.SmtpClient(_Host, _Port) { EnableSsl = _UseSSL })
+            {
+                server.Credentials = new NetworkCredential(_Login, _Password);
+
+                using (var msg = new System.Net.Mail.MailMessage())
+                {
+                    msg.From = new System.Net.Mail.MailAddress(From.Address, From.Name);
+                    msg.To.Add(new System.Net.Mail.MailAddress(To.Address, To.Name));
+
+                    await server.SendMailAsync(msg); //стандартная ф-ция SmptClient
+                }
+            }
+        }
+
+        public async Task SendAsync(
+            MailMessage Message, 
+            Sender From, 
+            IEnumerable<Recipient> To, 
+            IProgress<double> Progress = null, 
+            CancellationToken Cancel = default)
+        {
+            //Параллельный Асинхолнный процесс
+            //await Task.WhenAll(To.Select(to => SendAsync(Message, From, to)));
+            
+            #region Последовательный Асинхронный процесс
+            var to = To.ToArray();
+            var ToLength = to.Length;
+
+            for (int i = 0; i < ToLength; i++)
+            {
+                Cancel.ThrowIfCancellationRequested();
+                await SendAsync(Message, From, to[i]);
+                Progress?.Report((double)i / ToLength);
+            }
+
+            Progress?.Report(1);
+            #endregion
         }
     }
 }

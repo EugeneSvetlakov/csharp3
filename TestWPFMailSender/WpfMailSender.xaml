@@ -11,7 +11,7 @@
         xmlns:data="clr-namespace:System.Data.SqlClient;assembly=System.Data"
         xmlns:view="clr-namespace:MailSender.View"
         mc:Ignorable="d"
-        Title="{Binding Title}" Height="540" MinHeight="400" MinWidth="400"
+        Title="{Binding Title}" Height="540" MinHeight="400" MinWidth="500"
         DataContext="{Binding MainWindowViewModel, Source={StaticResource Locator}}">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">

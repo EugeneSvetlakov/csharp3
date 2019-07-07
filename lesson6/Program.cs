@@ -23,31 +23,31 @@ namespace lesson6
             var TotalPhysicalMemory = (new ComputerInfo().TotalPhysicalMemory) / 1048576;
             var currentProc = Process.GetCurrentProcess().PrivateMemorySize64 / 1048576;
             #endregion
-
-            Console.Read();
+            Console.WriteLine("Данные о памяти получены. Для продолжения нажмите любую клавиш...");
+            Console.ReadKey();
 
             #region ДЗ Задача 1.
             // Задание 1: Даны 2 двумерных матрицы. Размерность 100х100 каждая. 
             //Напишите приложение, производящее параллельное умножение матриц. 
             //Матрицы заполняются случайными целыми числами от 0 до10.
 
-            //var A = new MyMatrix(13,2000000000);
-            //var A_row = A.Rows();
-            //var A_col = A.Columns();
+            var A = new MyMatrix(13, 2000000000);
+            var A_row = A.Rows();
+            var A_col = A.Columns();
 
-            //var B = new MyMatrix(13,2000000000);
-            //var B_row = B.Rows();
-            //var B_col = B.Columns();
+            var B = new MyMatrix(13, 2000000000);
+            var B_row = B.Rows();
+            var B_col = B.Columns();
 
-            //var timestart1 = DateTime.Now;
-            //var AB = A.Myltiply(B);
-            //Console.WriteLine($"Выполнено за {DateTime.Now - timestart1}");
+            var timestart1 = DateTime.Now;
+            var AB = A.Myltiply(B);
+            Console.WriteLine($"Выполнено за {DateTime.Now - timestart1}");
 
-            //var timestart2 = DateTime.Now;
-            //var AB2 = A.MyltiplyParallele(B);
-            //Console.WriteLine($"Выполнено за {DateTime.Now - timestart2}");
+            var timestart2 = DateTime.Now;
+            var AB2 = A.MyltiplyParallele(B);
+            Console.WriteLine($"Выполнено за {DateTime.Now - timestart2}");
 
-            //Pause();
+            Pause();
             #endregion
 
             #region ДЗ Задача 2.

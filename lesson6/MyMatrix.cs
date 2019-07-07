@@ -71,9 +71,11 @@ namespace lesson6
             for (int i = 0; i < this.Rows(); i++)
             {
                 int ii = i;
-                tasks[i] = Task.Factory.StartNew(() => MultiplyRow(B, res, ii));
+                tasks[i] = Task.Factory.StartNew(() => {
+                    MultiplyRow(B, res, ii);
+                });
             }
-            
+
             Task.WaitAll(tasks);
 
             return res;
@@ -106,22 +108,18 @@ namespace lesson6
             return res;
         }
 
-        private void MultiplyRow(MyMatrix B, MyMatrix res, int i)
+        private async void MultiplyRow(MyMatrix B, MyMatrix res ,int i)
         {
-            for (int j = 0; j < B.Columns(); j++)
+            await Task.Run(() =>
             {
-                for (int k = 0; k < B.Rows(); k++)
+                for (int j = 0; j < B.Columns(); j++)
                 {
-                    try
+                    for (int k = 0; k < B.Rows(); k++)
                     {
                         res._Matrix[i, j] += this._Matrix[i, k] * B._Matrix[k, j];
                     }
-                    catch (Exception e)
-                    {
-                        Debug.WriteLine(e.Message);
-                    }
                 }
-            }
+            });
         }
 
         public int Rows()
