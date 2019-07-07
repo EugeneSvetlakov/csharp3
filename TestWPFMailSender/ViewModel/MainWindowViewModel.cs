@@ -337,6 +337,7 @@ namespace MailSender.ViewModel
         {
             var new_item = new Server()
             {
+                id = -1,
                 Name = "HostName",
                 Address = "NewHost",
                 Port = 25,

@@ -30,7 +30,7 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID" MinWidth="20" Binding="{Binding id}"/>
                 <DataGridTextColumn Header="Имя" MinWidth="200" Binding="{Binding Name}"/>
-                <DataGridTextColumn Header="Email" MinWidth="200" Binding="{Binding MailAddr}"/>
+                <DataGridTextColumn Header="Email" MinWidth="200" Binding="{Binding Address}"/>
                 <DataGridTextColumn Header="Comment" Width="*" Binding="{Binding Comment}"/>
             </DataGrid.Columns>
         </DataGrid>

@@ -73,6 +73,7 @@ namespace lesson6
                 int ii = i;
                 tasks[i] = Task.Factory.StartNew(() => MultiplyRow(B, res, ii));
             }
+            
             Task.WaitAll(tasks);
 
             return res;

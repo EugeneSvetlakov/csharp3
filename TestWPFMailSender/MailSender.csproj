@@ -144,6 +144,9 @@
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
+    <Compile Include="View\ListControler.xaml.cs">
+      <DependentUpon>ListControler.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\RecipientsInfoEditor.xaml.cs">
       <DependentUpon>RecipientsInfoEditor.xaml</DependentUpon>
     </Compile>
@@ -154,6 +157,10 @@
     <Compile Include="defaultMessage.cs" />
     <Compile Include="Data\Memory\EmailSendServiceClass.cs" />
     <Compile Include="defaultMailServer.cs" />
+    <Page Include="View\ListControler.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\RecipientsInfoEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

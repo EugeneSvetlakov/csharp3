@@ -50,7 +50,8 @@ namespace MailSender.ViewModel
             services.Register(() => new MailSenderDbContext());
             services.Register<IRecipientsDataService, RecipientsDataInMemory>();
             //services.Register<IRecipientsDataService, RecipientsDataServicesLinq2Sql>();
-            services.Register<IServersDataService, MailServersDataServicesLinq2Sql>();
+            services.Register<IServersDataService, ServersDataInMemory>();
+            //services.Register<IServersDataService, MailServersDataServicesLinq2Sql>();
             services.Register<ISendersDataService, SendersDataServicesLinq2Sql>();
             services.Register<IMailMessageDataService, MailTemplatesDataServicesLinq2Sql>();
             services.Register<IMailSenderService, SmtpMailSenderService>();

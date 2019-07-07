@@ -1,0 +1,54 @@
+﻿<UserControl x:Class="MailSender.View.ListControler"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:fa="http://schemas.fontawesome.io/icons/"
+             xmlns:local="clr-namespace:MailSender.View"
+             mc:Ignorable="d" 
+             d:DesignHeight="45" d:DesignWidth="700">
+    <DockPanel DataContext="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ListControler}}}">
+        <Label VerticalAlignment="Center" Content="{Binding PanelName}"/>
+        <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+            <Button Margin="0,0,5,0" Command="{Binding CreateCommand}">
+                <StackPanel Orientation="Horizontal">
+                    <fa:ImageAwesome Icon="Plus" Foreground="WhiteSmoke" Height="18" Margin="2,0,2,0">
+                        <fa:ImageAwesome.Effect>
+                            <DropShadowEffect ShadowDepth="3" BlurRadius="3" Color="LightGray"></DropShadowEffect>
+                        </fa:ImageAwesome.Effect>
+                    </fa:ImageAwesome>
+                    <TextBlock Text="Add" Margin="7,0,0,0" VerticalAlignment="Center"></TextBlock>
+                </StackPanel>
+            </Button>
+            <Button Margin="0,0,5,0" Visibility="Visible" 
+                    Command="{Binding EditCommand}" CommandParameter="{Binding SelectedItem}">
+                <StackPanel Orientation="Horizontal">
+                    <fa:ImageAwesome Icon="Edit" Foreground="GreenYellow" Height="18" Margin="2,0,2,0">
+                        <fa:ImageAwesome.Effect>
+                            <DropShadowEffect ShadowDepth="3" BlurRadius="3" Color="LightGray"></DropShadowEffect>
+                        </fa:ImageAwesome.Effect>
+                    </fa:ImageAwesome>
+                    <TextBlock Text="Edit" Margin="7,0,0,0" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+            <Button Margin="0,0,5,0" 
+                    Command="{Binding DeleteCommand}" CommandParameter="{Binding SelectedItem}">
+                <StackPanel Orientation="Horizontal">
+                    <fa:ImageAwesome Icon="Trash" Height="18" Margin="2,0,2,0">
+                        <fa:ImageAwesome.Effect>
+                            <DropShadowEffect ShadowDepth="3" BlurRadius="3" Color="LightGray"></DropShadowEffect>
+                        </fa:ImageAwesome.Effect>
+                    </fa:ImageAwesome>
+                    <TextBlock Text="Del" Margin="7,0,0,0" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+        </StackPanel>
+        <ComboBox Margin="7" MinWidth="150"
+                  ItemsSource="{Binding ItemSource}"
+                  SelectedItem="{Binding SelectedItem}"
+                  SelectedIndex="{Binding SelectedIndex}"
+                  ItemTemplate="{Binding ItemTemplate}">
+
+        </ComboBox>
+    </DockPanel>
+</UserControl>

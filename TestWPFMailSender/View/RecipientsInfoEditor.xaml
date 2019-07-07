@@ -26,7 +26,7 @@
                     <DataTemplate>
                         <StackPanel Orientation="Vertical">
                             <TextBlock Text="{Binding Name}"/>
-                            <TextBlock Text="{Binding MailAddr}"/>
+                            <TextBlock Text="{Binding Address}"/>
                         </StackPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
@@ -56,7 +56,7 @@
                             </ControlTemplate>
                         </Validation.ErrorTemplate>
                         <TextBox.Text>
-                            <Binding Path="CurrentRecipient.MailAddr" UpdateSourceTrigger="PropertyChanged" ValidatesOnDataErrors="True" ValidatesOnExceptions="True" ValidatesOnNotifyDataErrors="True" NotifyOnValidationError="True">
+                            <Binding Path="CurrentRecipient.Address" UpdateSourceTrigger="PropertyChanged" ValidatesOnDataErrors="True" ValidatesOnExceptions="True" ValidatesOnNotifyDataErrors="True" NotifyOnValidationError="True">
                                 <Binding.ValidationRules>
                                     <vr:RegExValidationRule Pattern="\w+@\w+" ErrorMessage="неверный формат email"/>
                                 </Binding.ValidationRules>

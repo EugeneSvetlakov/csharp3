@@ -24,7 +24,10 @@ namespace MailSender.Services.InMemory
 
         public void Add(T item)
         {
+            if (item is null) throw new ArgumentNullException(nameof(item));
+
             if (_Items.Any(i => i.id == item.id)) return;
+            item.id = _Items.Count == 0 ? 1 : _Items.Max(i => i.id) + 1;
             _Items.Add(item);
         }
 

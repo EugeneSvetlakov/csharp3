@@ -5,6 +5,15 @@ namespace MailSender.Services.InMemory
 {
     public class ServersDataInMemory : DataInMemory<Server>, IServersDataService
     {
+        public ServersDataInMemory()
+        {
+            for(int i = 0; i < 10; i++)
+            {
+                _Items.Add(new Server { id = i, Name = $"server_{i}", 
+                    Address = $"smtp.server{i}.localhost", Port = 25 });
+            }
+        }
+
         public override void Edit(Server item)
         {
             if (item is null)
