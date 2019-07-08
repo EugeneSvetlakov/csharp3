@@ -71,12 +71,14 @@ namespace lesson6
             for (int i = 0; i < this.Rows(); i++)
             {
                 int ii = i;
-                tasks[i] = Task.Factory.StartNew(() => {
+                tasks[i] = Task.Factory.StartNew(() =>
+                {
                     MultiplyRow(B, res, ii);
+                    Console.WriteLine($"Задача №{ii} в потоке id={Thread.CurrentThread.ManagedThreadId}");
                 });
             }
-
             Task.WaitAll(tasks);
+            
 
             return res;
         }

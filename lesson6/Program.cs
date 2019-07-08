@@ -31,21 +31,22 @@ namespace lesson6
             //Напишите приложение, производящее параллельное умножение матриц. 
             //Матрицы заполняются случайными целыми числами от 0 до10.
 
-            var A = new MyMatrix(13, 2000000000);
+            var A = new MyMatrix(50, 2000000000);
             var A_row = A.Rows();
             var A_col = A.Columns();
 
-            var B = new MyMatrix(13, 2000000000);
+            var B = new MyMatrix(50, 2000000000);
             var B_row = B.Rows();
             var B_col = B.Columns();
 
             var timestart1 = DateTime.Now;
             var AB = A.Myltiply(B);
-            Console.WriteLine($"Выполнено за {DateTime.Now - timestart1}");
+            var timestart1End = DateTime.Now;
+            Console.WriteLine($"Myltiply выполнена за {timestart1End - timestart1}");
 
             var timestart2 = DateTime.Now;
             var AB2 = A.MyltiplyParallele(B);
-            Console.WriteLine($"Выполнено за {DateTime.Now - timestart2}");
+            Console.WriteLine($"MyltiplyParallele выполнена за {DateTime.Now - timestart2}");
 
             Pause();
             #endregion
