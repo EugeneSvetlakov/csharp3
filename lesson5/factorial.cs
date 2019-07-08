@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace lesson5
@@ -9,7 +10,7 @@ namespace lesson5
     /// <summary>
     /// Класс для вычисления факториала целого числа > 0
     /// </summary>
-    static class factorial
+    public static class factorial
     {
         private static int _Res;
 
@@ -20,6 +21,7 @@ namespace lesson5
             for (int i = 1; i <= num; i++)
             {
                 _Res = _Res * i;
+                Thread.Sleep(250);
             }
             return _Res;
         }
