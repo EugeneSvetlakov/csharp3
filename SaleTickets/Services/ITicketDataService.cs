@@ -7,5 +7,5 @@ using System.Threading.Tasks;
 
 namespace SaleTickets.Services
 {
-    public interface ITicketDataService<T> : IEntityFrameworkService<T> where T : Ticket { }
+    public interface ITicketDataService : IEntityFrameworkService<Ticket> { }
 }

@@ -17,6 +17,7 @@ using GalaSoft.MvvmLight.Ioc;
 using CommonServiceLocator;
 using SaleTickets.Services;
 using SaleTickets.Data;
+using SaleTickets.Data.EF;
 
 namespace SaleTickets.ViewModel
 {
@@ -35,7 +36,7 @@ namespace SaleTickets.ViewModel
 
             //Определение каким сервисом работы с данными пользоваться: InMemmory/Linq2Sql/EF
             var services = SimpleIoc.Default;
-            //services.Register<ITicketDataService, Ticket>();
+            services.Register<ITicketDataService, TicketDataService>();
 
             SimpleIoc.Default.Register<MainViewModel>();
         }
