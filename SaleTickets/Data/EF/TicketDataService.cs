@@ -11,27 +11,59 @@ namespace SaleTickets.Data.EF
     {
         public Ticket GetById(int id)
         {
-            throw new NotImplementedException();
+            using(var db = new TicketsDb())
+            {
+                return db.Tickets.FirstOrDefault(t => (t.Id == id));
+            }
         }
 
         public IEnumerable<Ticket> GetAll()
         {
-            throw new NotImplementedException();
+            using (var db = new TicketsDb())
+            {
+                return db.Tickets.ToArray<Ticket>();
+            }
         }
 
         public void Add(Ticket item)
         {
-            throw new NotImplementedException();
+            using (var db = new TicketsDb())
+            {
+                var sel = db.Tickets.FirstOrDefault(t => t.Id == item.Id);
+                if (sel is null)
+                {
+                    db.Tickets.Add(item);
+                    db.SaveChanges();
+                }
+                
+            }
         }
 
         public void Delete(Ticket item)
         {
-            throw new NotImplementedException();
+            using (var db = new TicketsDb())
+            {
+                var sel = db.Tickets.FirstOrDefault(t => t == item);
+                if (!(db.Tickets.FirstOrDefault(t => t.Id == item.Id) is null))
+                {
+                    db.Tickets.Remove(item);
+                    db.SaveChanges();
+                }
+            }
         }
 
         public void Edit(Ticket item)
         {
-            throw new NotImplementedException();
+            using (var db = new TicketsDb())
+            {
+                var sel = db.Tickets.FirstOrDefault(t => t.Id == item.Id);
+                if (!(sel is null))
+                {
+                    sel.SeanceName = item.SeanceName;
+                    sel.Quantity = item.Quantity;
+                    db.SaveChanges();
+                }
+            }
         }
     }
 }

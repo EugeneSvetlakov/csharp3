@@ -1,4 +1,10 @@
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.CommandWpf;
+using SaleTickets.Data;
+using SaleTickets.Services;
+using System;
+using System.Collections.ObjectModel;
+using System.Windows.Input;
 
 namespace SaleTickets.ViewModel
 {
@@ -19,16 +25,46 @@ namespace SaleTickets.ViewModel
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
         /// </summary>
-        public MainViewModel()
+        public MainViewModel(ITicketDataService TicketDataService)
         {
-            ////if (IsInDesignMode)
-            ////{
-            ////    // Code runs in Blend --> create design time data.
-            ////}
-            ////else
-            ////{
-            ////    // Code runs "for real"
-            ////}
+            _TicketDataService = TicketDataService;
+            GetTicketsDataCommand = new RelayCommand(OnGetTicketsDataCommandExecuted, CanGetTicketsDataCommandExecuted);
         }
+
+        #region Ticket
+        private readonly ITicketDataService _TicketDataService;
+        private ObservableCollection<Ticket> _Tickets;
+
+        public ObservableCollection<Ticket> Tickets
+        {
+            get => _Tickets;
+            private set => Set(ref _Tickets, value);
+        }
+
+        private Ticket _CurrentTicket;
+
+        public Ticket CurrentTicket
+        {
+            get => _CurrentTicket;
+            set => Set(ref _CurrentTicket, value);
+        }
+        #endregion
+
+        #region Commands
+        public ICommand GetTicketsDataCommand { get; }
+
+        private bool CanGetTicketsDataCommandExecuted() => true;
+
+        private void OnGetTicketsDataCommandExecuted()
+        {
+            GetTicketsData();
+        }
+
+        private void GetTicketsData()
+        {
+            Tickets = new ObservableCollection<Ticket>(_TicketDataService.GetAll());
+        }
+        #endregion
+
     }
 }
