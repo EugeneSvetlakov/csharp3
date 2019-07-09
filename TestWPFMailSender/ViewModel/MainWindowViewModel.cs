@@ -10,6 +10,7 @@ using MailSender.Data;
 using System.Windows.Input;
 using GalaSoft.MvvmLight.CommandWpf;
 using System.ComponentModel;
+using System.IO;
 
 namespace MailSender.ViewModel
 {
@@ -53,6 +54,9 @@ namespace MailSender.ViewModel
 
             _MailSenderService = MailSenderService;
             //todo Commands for MailSenderService
+
+            //Отчеты
+            CreateReportRecipientsCommand = new RelayCommand(OnCreateReportRecipientsCommand, CanCreateReportRecipientsCommand);
         }
         #endregion
 
@@ -72,6 +76,37 @@ namespace MailSender.ViewModel
             get => _Status;
             set => Set(ref _Status, value);
         }
+        #endregion
+
+        #region Отчеты
+
+        public ICommand CreateReportRecipientsCommand { get; }
+
+        private bool CanCreateReportRecipientsCommand() => !(Recipients is null);
+
+        private void OnCreateReportRecipientsCommand()
+        {
+            //todo
+            string str = "Список получателей писем: ";
+            int counter = 0;
+            foreach (var item in Recipients)
+            {
+                str += $"{counter++}) ID: {item.id} Name: {item.Name} Address: {item.Address}; ";
+            }
+
+            var report = new Reports.Report
+            {
+                Data1 = DateTime.Now.ToLongDateString(),
+                Data2 = str
+            };
+
+            string Path = @"..\..\ReportFiles";
+            string date1 = DateTime.Now.ToString("yyyyMMddHHmmssfff");
+            if (!Directory.Exists(Path))
+                Directory.CreateDirectory(Path);
+            report.CreatePackage($"{Path}\\Report_{DateTime.Now.ToString("yyyyMMddHHmmssfff")}.docx");
+        }
+
         #endregion
 
         #region Recipients

@@ -272,6 +272,18 @@
             <TabItem Header="Статистика" IsEnabled="True">
                 
             </TabItem>
+            <TabItem Header="Отчеты" IsEnabled="True">
+                <DockPanel>
+                    <StackPanel Margin="0,20" DockPanel.Dock="Top" Orientation="Horizontal">
+                        <TextBlock 
+                            VerticalAlignment="Center"
+                            Margin="10,0"
+                            Text="Существующие получатели:"/>
+                        <Button Content="docx" Command="{Binding CreateReportRecipientsCommand}"/>
+                    </StackPanel>
+                    <StackPanel/>
+                </DockPanel>
+            </TabItem>
         </TabControl>
     </DockPanel>
 </Window>

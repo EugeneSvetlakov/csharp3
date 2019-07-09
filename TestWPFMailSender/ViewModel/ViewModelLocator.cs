@@ -1,16 +1,4 @@
-/*
-  In App.xaml:
-  <Application.Resources>
-      <vm:ViewModelLocator xmlns:vm="clr-namespace:TestWPFMailSender"
-                           x:Key="Locator" />
-  </Application.Resources>
-  
-  In the View:
-  DataContext="{Binding Source={StaticResource Locator}, Path=ViewModelName}"
 
-  You can also use Blend to do all this with the tool's support.
-  See http://www.galasoft.ch/mvvm
-*/
 
 using CommonServiceLocator;
 using GalaSoft.MvvmLight;
@@ -46,15 +34,20 @@ namespace MailSender.ViewModel
             ////    SimpleIoc.Default.Register<IDataService, DataService>();
             ////}
 
+
+            //Определение каким сервисом работы с данными пользоваться: InMemmory/Linq2Sql/EF
             var services = SimpleIoc.Default;
-            services.Register(() => new MailSenderDbContext());
-            services.Register<IRecipientsDataService, RecipientsDataInMemory>();
-            //services.Register<IRecipientsDataService, RecipientsDataServicesLinq2Sql>();
-            services.Register<IServersDataService, ServersDataInMemory>();
-            //services.Register<IServersDataService, MailServersDataServicesLinq2Sql>();
-            services.Register<ISendersDataService, SendersDataServicesLinq2Sql>();
-            services.Register<IMailMessageDataService, MailTemplatesDataServicesLinq2Sql>();
-            services.Register<IMailSenderService, SmtpMailSenderService>();
+            
+            services.Register(() => new MailSenderDbContext()); //Инициализирует подключение к БД через Linq2Sql
+            services.Register<IRecipientsDataService, RecipientsDataInMemory>(); //Данные в памяти
+            //services.Register<IRecipientsDataService, RecipientsDataServicesLinq2Sql>(); //Данные получателей в БД через Linq2Sql
+            services.Register<IServersDataService, ServersDataInMemory>(); //Данные серверов в памяти
+            //services.Register<IServersDataService, MailServersDataServicesLinq2Sql>(); //Данные серверов в БД через Linq2Sql
+            services.Register<ISendersDataService, SendersDataInMemory>(); //Данные отправителей в памяти
+            //services.Register<ISendersDataService, SendersDataServicesLinq2Sql>(); //Данные в БД через Linq2Sql
+            services.Register<IMailMessageDataService, MailMessagesDataInMemory>(); //Данные в памяти
+            //services.Register<IMailMessageDataService, MailTemplatesDataServicesLinq2Sql>(); //Данные в БД через Linq2Sql
+            services.Register<IMailSenderService, SmtpMailSenderService>(); //Сервис рассылки сообщений
 
             services.Register<MainViewModel>();
             services.Register<MainWindowViewModel>();
