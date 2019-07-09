@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using MailSenderTest.Migrations;
+using System;
 using System.Data.Entity;
 using System.Linq;
 using System.Text;
@@ -11,6 +9,28 @@ namespace MailSenderTest.data
 {
     class SongsDb : DbContext
     {
+        #region Установка инициализатора БД
+
+        static SongsDb()
+        {
+            // Отладочный инициализатор
+            // При каждом запуске приложения полностью удаляет и пересоздает БД со срабатыванием 
+            // метода Seed, который наполняет БД начальными данными
+            //Database.SetInitializer(new DropCreateDatabaseAlways<SongsDb>());
+
+            // Если структура классов программы отличается от структуры таблиц в БД
+            // БД пересоздается
+            //Database.SetInitializer(new DropCreateDatabaseIfModelChanges<SongsDb>());
+
+            // Создает БД, если ее не существует
+            Database.SetInitializer(new CreateDatabaseIfNotExists<SongsDb>());
+
+            // Версия БД обновится до последней версии
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<SongsDb, Configuration>());
+        }
+
+        #endregion
+
         /// <summary>
         /// Конструктор
         /// </summary>
@@ -27,32 +47,5 @@ namespace MailSenderTest.data
         public DbSet<Song> Songs { get; set; }
 
         public DbSet<Artist> Artists { get; set; }
-    }
-
-    [Table("Songs")]
-    public class Song
-    {
-        public int Id { get; set; }
-
-        [Required, MaxLength(120)]
-        public string Name { get; set; }
-
-        public double Length { get; set; }
-
-        public string Description { get; set; }
-
-        public virtual Artist Artist { get; set; } //virtual - навигационное свойство, данные будут загружаться автоматически и из таблицы Artists
-    }
-
-    //[Table("Artists")]
-    public class Artist
-    {
-        [Key]
-        public int Id { get; set; }
-
-        [Required, MaxLength(120)]
-        public string Name { get; set; }
-
-        public virtual ICollection<Song> Songs { get; set; }
     }
 }
