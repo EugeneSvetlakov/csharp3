@@ -14,14 +14,14 @@ namespace MailSender.Services.InMemory
             }
         }
 
-        public override void Edit(Server item)
+        public override Server Edit(int id, Server item)
         {
             if (item is null)
                 throw new ArgumentNullException(nameof(item));
 
-            var db_item = GetById(item.id);
+            var db_item = GetById(id);
 
-            if (db_item is null) return;
+            if (db_item is null) return null;
 
             db_item.Name = item.Name;
             db_item.Address = item.Address;
@@ -29,6 +29,7 @@ namespace MailSender.Services.InMemory
             db_item.Ssl = item.Ssl;
             db_item.Login = item.Login;
             db_item.Pwd = item.Pwd;
+            return db_item;
         }
     }
 }

@@ -29,6 +29,11 @@ namespace MailSender.Services.Linq2Sql
                 .ToArray();
         }
 
+        public Task<IEnumerable<Sender>> GetAllAsync()
+        {
+            throw new NotImplementedException();
+        }
+
         public Sender GetById(int id) => _Db.Senders.Select(r => new Sender
             {
                 id = r.id,
@@ -38,30 +43,72 @@ namespace MailSender.Services.Linq2Sql
             })
             .FirstOrDefault(r => r.id == id);
 
-        public void Add(Sender item)
+        public Task<Sender> GetByIdAsync(int id)
         {
-            if (item.id != 0) return; 
+            throw new NotImplementedException();
+        }
+
+        public int Add(Sender item)
+        {
+            if (item.id != 0) return -1; 
             _Db.Senders.InsertOnSubmit(new MailSender.Data.Linq2Sql.Sender
             {
                 Name = item.Name,
                 MailAddr = item.Address,
                 Comment = item.Comment
             });
-            _Db.SubmitChanges();
+            try
+            {
+                _Db.SubmitChanges();
+                return 1;
+            }
+            catch (Exception e)
+            {
+                return -1;
+            }
         }
 
-        public void Edit(Sender item)
+        public Task<int> AddAsync(Sender item)
         {
-            _Db.SubmitChanges();
+            throw new NotImplementedException();
         }
 
-        public void Delete(Sender item)
+        public Sender Edit(int id, Sender item)
         {
-            var db_item = _Db.Senders.FirstOrDefault(r => r.id == item.id);
+            try
+            {
+                _Db.SubmitChanges();
+                return GetById(id);
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
+
+        public Task<Sender> EditAsync(int id, Sender item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Delete(int id)
+        {
+            var db_item = _Db.Senders.FirstOrDefault(r => r.id == id);
             _Db.Senders.DeleteOnSubmit(db_item);
-            _Db.SubmitChanges();
+            try
+            {
+                _Db.SubmitChanges();
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
         }
 
-        
+        public Task<bool> DeleteAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

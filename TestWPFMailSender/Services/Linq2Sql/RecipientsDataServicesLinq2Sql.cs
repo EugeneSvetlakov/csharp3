@@ -30,6 +30,11 @@ namespace MailSender.Services.Linq2Sql
                 .ToArray();
         }
 
+        public Task<IEnumerable<Recipient>> GetAllAsync()
+        {
+            throw new NotImplementedException();
+        }
+
         public Recipient GetById(int id) => _Db.Recipients
             .Select(r => new Recipient
             {
@@ -40,29 +45,66 @@ namespace MailSender.Services.Linq2Sql
             })
             .FirstOrDefault(r => r.id == id);
 
-        public void Add(Recipient item)
+        public Task<Recipient> GetByIdAsync(int id)
         {
-            if (item.id != 0) return; 
+            throw new NotImplementedException();
+        }
+
+        public int Add(Recipient item)
+        {
+            if (item.id != 0) return -1; 
             _Db.Recipients.InsertOnSubmit(new Data.Linq2Sql.Recipient
             {
                 Name = item.Name,
                 MailAddr = item.Address,
                 Comment = item.Comment
             });
-            _Db.SubmitChanges();
+            try
+            {
+                _Db.SubmitChanges();
+                return 1;
+            }
+            catch (Exception e)
+            {
+                return -1;
+            }
         }
 
-        public void Edit(Recipient item)
+        public Task<int> AddAsync(Recipient item)
         {
-            _Db.SubmitChanges();
+            throw new NotImplementedException();
         }
 
-        public void Delete(Recipient item)
+        public Recipient Edit(int id,Recipient item)
         {
-            var db_item = _Db.Recipients.FirstOrDefault(i => i.id == item.id);
-            if (db_item is null) return;
+            _Db.SubmitChanges();
+            return GetById(id);
+        }
+
+        public Task<Recipient> EditAsync(int id, Recipient item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Delete(int id)
+        {
+            var db_item = _Db.Recipients.FirstOrDefault(i => i.id == id);
+            if (db_item is null) return false;
             _Db.Recipients.DeleteOnSubmit(db_item);
-            _Db.SubmitChanges();
+            try
+            {
+                _Db.SubmitChanges();
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+
+        public Task<bool> DeleteAsync(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

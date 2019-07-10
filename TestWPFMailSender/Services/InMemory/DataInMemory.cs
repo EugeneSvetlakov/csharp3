@@ -15,6 +15,8 @@ namespace MailSender.Services.InMemory
 
         public IEnumerable<T> GetAll() => _Items;
 
+        public Task<IEnumerable<T>> GetAllAsync() => Task.FromResult((IEnumerable<T>)_Items);
+
         public T GetById(int id)
         {
             if (id < 1)
@@ -22,20 +24,37 @@ namespace MailSender.Services.InMemory
             return _Items.FirstOrDefault(item => item.id == id);
         }
 
-        public void Add(T item)
+        public async Task<T> GetByIdAsync(int id) => await Task.Run(() => GetById(id));
+
+        public int Add(T item)
         {
             if (item is null) throw new ArgumentNullException(nameof(item));
 
-            if (_Items.Any(i => i.id == item.id)) return;
+            if (_Items.Any(i => i.id == item.id)) return -1;
             item.id = _Items.Count == 0 ? 1 : _Items.Max(i => i.id) + 1;
             _Items.Add(item);
+            return item.id;
         }
 
-        public abstract void Edit(T item);
+        public async Task<int> AddAsync(T item) => await Task.Run(() => Add(item));
 
-        public void Delete(T item)
+        public abstract T Edit(int id, T item);
+
+        public virtual async Task<T> EditAsync(int id, T item) => await Task.Run(() => Edit(id, item));
+
+        public bool Delete(int id)
         {
-            _Items.Remove(item);
+            try
+            {
+                _Items.RemoveAt(id);
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
         }
+
+        public async Task<bool> DeleteAsync(int id) => await Task.Run(() => Delete(id));
     }
 }

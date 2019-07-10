@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MailSender.Data.EF
 {
-    class MailSenderDB : DbContext
+    public class MailSenderDB : DbContext
     {
         public MailSenderDB() : this("Name=MailSenderDB") { }
 

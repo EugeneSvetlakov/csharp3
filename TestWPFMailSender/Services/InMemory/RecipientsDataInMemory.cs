@@ -18,18 +18,19 @@ namespace MailSender.Services.InMemory
             _Items.AddRange(test_data);
         }
 
-        public override void Edit(Recipient item)
+        public override Recipient Edit(int id, Recipient item)
         {
             //todo: проверить исправность работы сравнивалки _Items.Contains(item)
             if (item is null) throw new ArgumentNullException(nameof(item));
 
-            var db_item = GetById(item.id);
+            var db_item = GetById(id);
 
-            if (db_item is null) return;
+            if (db_item is null) return null;
 
             db_item.Name = item.Name;
             db_item.Address = item.Address;
             db_item.Comment = item.Comment;
+            return db_item;
         }
     }
 }

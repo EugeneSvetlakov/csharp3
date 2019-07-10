@@ -15,6 +15,12 @@ namespace MailSender.Services
         IEnumerable<T> GetAll();
 
         /// <summary>
+        /// Получить всех Асинхронно
+        /// </summary>
+        /// <returns></returns>
+        Task<IEnumerable<T>> GetAllAsync();
+
+        /// <summary>
         /// Получить представителя класса по его id
         /// </summary>
         /// <param name="id"></param>
@@ -22,21 +28,46 @@ namespace MailSender.Services
         T GetById(int id);
 
         /// <summary>
+        /// Получить представителя класса по его id Асинхронно
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Task<T> GetByIdAsync(int id);
+
+        /// <summary>
         /// Создать (зарегистрировать)
         /// </summary>
         /// <param name="item">представитель класса</param>
-        void Add(T item);
+        int Add(T item);
+
+        /// <summary>
+        /// Создать (зарегистрировать) Асинхронно
+        /// </summary>
+        /// <param name="item">представитель класса</param>
+        Task<int> AddAsync(T item);
 
         /// <summary>
         /// Обновить
         /// </summary>
         /// <param name="item">представитель класса</param>
-        void Edit(T item);
+        T Edit(int id, T item);
+
+        /// <summary>
+        /// Обновить Асинхронно
+        /// </summary>
+        /// <param name="item">представитель класса</param>
+        Task<T> EditAsync(int id, T item);
 
         /// <summary>
         /// Удалить
         /// </summary>
         /// <param name="item">представитель класса</param>
-        void Delete(T item);
+        bool Delete(int id);
+
+        /// <summary>
+        /// Удалить Асинхронно
+        /// </summary>
+        /// <param name="item">представитель класса</param>
+        Task<bool> DeleteAsync(int id);
     }
 }

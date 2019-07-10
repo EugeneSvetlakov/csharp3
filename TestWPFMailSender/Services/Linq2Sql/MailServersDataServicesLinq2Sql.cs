@@ -32,6 +32,11 @@ namespace MailSender.Services.Linq2Sql
                 .ToArray();
         }
 
+        public Task<IEnumerable<Server>> GetAllAsync()
+        {
+            throw new NotImplementedException();
+        }
+
         public Server GetById(int id) => _Db.MailServers
             .Select(r => new Server
             {
@@ -45,9 +50,19 @@ namespace MailSender.Services.Linq2Sql
             })
             .FirstOrDefault(r => r.id == id);
 
-        public void Add(Server item)
+        public Task<Server> GetByIdAsync(int id)
         {
-            if (item.id != 0) return;
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Добавление записи
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns>1 - успешно, -1 - ошибка</returns>
+        public int Add(Server item)
+        {
+            if (item.id != 0) return -1;
             _Db.MailServers.InsertOnSubmit(new MailSender.Data.Linq2Sql.MailServer
             {
                 Host = item.Address,
@@ -57,21 +72,54 @@ namespace MailSender.Services.Linq2Sql
                 Pwd = item.Pwd
                 
             });
-            _Db.SubmitChanges();
+            try
+            {
+                _Db.SubmitChanges();
+                return 1;
+            }
+            catch (Exception e)
+            {
+                return -1;
+            }
         }
 
-        public void Edit(Server item)
+        public Task<int> AddAsync(Server item)
         {
-            _Db.SubmitChanges();
+            throw new NotImplementedException();
         }
 
-        public void Delete(Server item)
+        public Server Edit(int id, Server item)
         {
-            var db_item = _Db.MailServers.FirstOrDefault(r => r.id == item.id);
-            if (db_item is null) return;
+            _Db.SubmitChanges();
+            return GetById(id);
+        }
+
+        public Task<Server> EditAsync(int id, Server item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Delete(int id)
+        {
+            var db_item = _Db.MailServers.FirstOrDefault(r => r.id == id);
+            if (db_item is null) return false;
 
             _Db.MailServers.DeleteOnSubmit(db_item);
-            _Db.SubmitChanges();
+
+            try
+            {
+                _Db.SubmitChanges();
+                return true;
+            }
+            catch(Exception e)
+            {
+                return false;
+            }
+        }
+
+        public Task<bool> DeleteAsync(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -143,6 +143,11 @@
     <Compile Include="Data\Sender.cs" />
     <Compile Include="Data\Recipient.cs" />
     <Compile Include="Reports\Report.cs" />
+    <Compile Include="Services\EF\EFData.cs" />
+    <Compile Include="Services\EF\MailMessagesEFData.cs" />
+    <Compile Include="Services\EF\RecipientsEFData.cs" />
+    <Compile Include="Services\EF\SendersEFData.cs" />
+    <Compile Include="Services\EF\ServersEFData.cs" />
     <Compile Include="Services\IDataService.cs" />
     <Compile Include="Services\IMailMessageDataService.cs" />
     <Compile Include="Services\IMailSender.cs" />
