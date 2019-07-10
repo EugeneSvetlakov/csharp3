@@ -1,0 +1,3 @@
+3. Есть таблица Users. Столбцы в ней — Id, Name. Написать SQL-запрос, который выведет имена пользователей, начинающиеся на 'A' и встречающиеся в таблице более одного раза, и их количество.
+
+SELECT count(*) as CountNameWithA, Name FROM Users WHERE Name like N'A%' GROUP BY Name HAVING count(*) > 1

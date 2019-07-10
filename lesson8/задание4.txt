@@ -1,0 +1,17 @@
+4. Каков результат вывода следующего кода?
+
+private enum SomeEnum
+{
+    First = 4,
+    Second,
+    Third = 7
+}
+static void Main(string[] args)
+{
+    Console.WriteLine((int)SomeEnum.Second);
+}
+
+======
+Результат вывода на консоль: 5
+
+

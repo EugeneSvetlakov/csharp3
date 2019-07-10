@@ -1,0 +1,14 @@
+2. Есть ли проблемы в следующем коде?
+
+int i = 1;
+object obj = i;
+++i;
+Console.WriteLine(i);
+Console.WriteLine(obj);
+Console.WriteLine((short)obj);
+
+=====
+
+Проблемы: 
+1) При вывод на консоль: i = 2, obj = 1
+2) Приведение типа меньшим диаппазоном (int -> short)
