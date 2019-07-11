@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Net;
 using System.Threading;
@@ -82,6 +83,8 @@ namespace MailSender.Services
                     msg.From = new System.Net.Mail.MailAddress(From.Address, From.Name);
                     msg.To.Add(new System.Net.Mail.MailAddress(To.Address, To.Name));
 
+                    server.SendCompleted += new System.Net.Mail.SendCompletedEventHandler(SendCompletedCallback);
+                    
                     await server.SendMailAsync(msg); //стандартная ф-ция SmptClient
                 }
             }
@@ -110,6 +113,25 @@ namespace MailSender.Services
 
             Progress?.Report(1);
             #endregion
+        }
+
+        private void SendCompletedCallback(object sender, AsyncCompletedEventArgs e)
+        {
+            // Уникальный идентификатор для Асинхронной задачи.
+            String token = (string)e.UserState;
+
+            if (e.Cancelled)
+            {
+                Console.WriteLine("[{0}] Отправка не удалась.", token);
+            }
+            if (e.Error != null)
+            {
+                Console.WriteLine("[{0}] {1}", token, e.Error.ToString());
+            }
+            else
+            {
+                Console.WriteLine("Сообщение отправлено.");
+            }
         }
     }
 }
