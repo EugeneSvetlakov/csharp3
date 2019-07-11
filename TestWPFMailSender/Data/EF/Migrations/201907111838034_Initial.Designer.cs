@@ -13,7 +13,7 @@ namespace MailSender.Data.EF.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201907110640134_Initial"; }
+            get { return "201907111838034_Initial"; }
         }
         
         string IMigrationMetadata.Source

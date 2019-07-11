@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MailSender.Data.BaseEntityes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,7 +18,7 @@ namespace MailSender.Data.Memory
         MailMessage mailTemplate;
         Server mailServer;
         List<Recipient> Recipients;
-        sendStatus sendStatus;
+        SendStatusEnum sendStatus;
         string report;
     }
 }

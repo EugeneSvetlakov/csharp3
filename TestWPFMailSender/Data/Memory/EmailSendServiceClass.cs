@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MailSender.Data.BaseEntityes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mail;
@@ -33,7 +34,7 @@ namespace MailSender.Data.Memory
         public string Body { get; set; }
         public SmtpClient client { get; set; }
         public string errMsg { get; set; } = string.Empty;
-        public sendStatus result { get; set; } = sendStatus.Unknown;
+        public SendStatusEnum result { get; set; } = SendStatusEnum.Unknown;
 
         public void Send()
         {
@@ -53,14 +54,14 @@ namespace MailSender.Data.Memory
                         client.Credentials = this.client.Credentials;
                         client.Send(message);
                         this.errMsg = "No errors";
-                        this.result = sendStatus.Ok;
+                        this.result = SendStatusEnum.Ok;
                     }
                 }
             }
             catch (Exception e)
             {
                 this.errMsg = $"Ошибка при отправке почты \r\n{ e.Message}";
-                this.result = sendStatus.Error;
+                this.result = SendStatusEnum.Error;
             }
         }
     }

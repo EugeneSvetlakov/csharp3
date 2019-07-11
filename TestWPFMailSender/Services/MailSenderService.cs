@@ -9,7 +9,7 @@ using MailSender.Data;
 
 namespace MailSender.Services
 {
-    public class SmtpMailSender : IMailSender
+    public class MailSenderService : IMailSenderService
     {
         public string _Host { get; }
         public int _Port { get; }
@@ -18,7 +18,7 @@ namespace MailSender.Services
         public string _Password { get; }
 
 
-        public SmtpMailSender(string Host, int Port, bool UseSSL, string Login, string Password)
+        public MailSenderService(string Host, int Port, bool UseSSL, string Login, string Password)
         {
             this._Host = Host;
             this._Port = Port;
@@ -27,7 +27,6 @@ namespace MailSender.Services
             this._Password = Password;
         }
 
-        
         public void Send(MailMessage Message, Sender From, Recipient To)
         {
             using (var server = new System.Net.Mail.SmtpClient(_Host, _Port) { EnableSsl = _UseSSL })
@@ -54,17 +53,6 @@ namespace MailSender.Services
 
         public void SendParallel(MailMessage Message, Sender From, IEnumerable<Recipient> To)
         {
-
-            //foreach (var recipient in To)
-            //{
-            //    var current_recipient = recipient;
-            //    new Thread(() => Send(Message, From, current_recipient))
-            //    {
-            //        Name = $"Поток отправки почты от {From.Name} к {recipient.Address}",
-            //        IsBackground = true
-            //    }.Start();
-            //}
-
             foreach (var recipient in To)
             {
                 var current_recipient = recipient;
@@ -114,6 +102,7 @@ namespace MailSender.Services
             Progress?.Report(1);
             #endregion
         }
+
 
         private void SendCompletedCallback(object sender, AsyncCompletedEventArgs e)
         {

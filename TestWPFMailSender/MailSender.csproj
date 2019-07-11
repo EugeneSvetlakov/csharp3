@@ -132,17 +132,12 @@
     <Compile Include="Data\BaseEntityes\Extensions.cs" />
     <Compile Include="Data\BaseEntityes\Human.cs" />
     <Compile Include="Data\BaseEntityes\NamedEntity.cs" />
-    <Compile Include="Data\SendStatus.cs" />
     <Compile Include="Data\BaseEntityes\SendStatusEnum.cs" />
     <Compile Include="Data\csv\WorkCSV.cs" />
     <Compile Include="Data\EF\MailSenderDB.cs" />
-    <Compile Include="Data\EF\Migrations\201907110640134_Initial.cs" />
-    <Compile Include="Data\EF\Migrations\201907110640134_Initial.Designer.cs">
-      <DependentUpon>201907110640134_Initial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Data\EF\Migrations\201907110733496_SchedulerTasksAdded.cs" />
-    <Compile Include="Data\EF\Migrations\201907110733496_SchedulerTasksAdded.Designer.cs">
-      <DependentUpon>201907110733496_SchedulerTasksAdded.cs</DependentUpon>
+    <Compile Include="Data\EF\Migrations\201907111838034_Initial.cs" />
+    <Compile Include="Data\EF\Migrations\201907111838034_Initial.Designer.cs">
+      <DependentUpon>201907111838034_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Data\EF\Migrations\Configuration.cs" />
     <Compile Include="Data\Encryptor\StringEncryptor.cs" />
@@ -155,24 +150,24 @@
     <Compile Include="Data\RecipientsList.cs" />
     <Compile Include="Data\Sender.cs" />
     <Compile Include="Data\Recipient.cs" />
-    <Compile Include="Data\SchedulerTask.cs" />
+    <Compile Include="Data\MailTask.cs" />
     <Compile Include="Reports\Report.cs" />
     <Compile Include="Services\EF\EFData.cs" />
     <Compile Include="Services\EF\MailMessagesEFData.cs" />
     <Compile Include="Services\EF\RecipientsEFData.cs" />
     <Compile Include="Services\EF\RecipientsListsEFData.cs" />
+    <Compile Include="Services\EF\MailTasksEFData.cs" />
     <Compile Include="Services\EF\SendersEFData.cs" />
     <Compile Include="Services\EF\ServersEFData.cs" />
     <Compile Include="Services\IDataService.cs" />
     <Compile Include="Services\IMailMessageDataService.cs" />
-    <Compile Include="Services\IMailSender.cs" />
     <Compile Include="Services\IMailSenderService.cs" />
     <Compile Include="Services\InMemory\DataInMemory.cs" />
     <Compile Include="Services\InMemory\MailMessagesDataInMemory.cs" />
     <Compile Include="Services\InMemory\SendersDataInMemory.cs" />
     <Compile Include="Services\InMemory\ServersDataInMemory.cs" />
     <Compile Include="Services\IRecipientsListsDataService.cs" />
-    <Compile Include="Services\ISchedulerTasksDataService.cs" />
+    <Compile Include="Services\IMailTasksDataService.cs" />
     <Compile Include="Services\IServersDataService.cs" />
     <Compile Include="Services\InMemory\RecipientsDataInMemory.cs" />
     <Compile Include="Services\IRecipientsDataService.cs" />
@@ -181,8 +176,7 @@
     <Compile Include="Services\Linq2Sql\MailServersDataServicesLinq2Sql.cs" />
     <Compile Include="Services\Linq2Sql\SendersDataServicesLinq2Sql.cs" />
     <Compile Include="Services\Linq2Sql\RecipientsDataServicesLinq2Sql.cs" />
-    <Compile Include="Services\SmtpMailSender.cs" />
-    <Compile Include="Services\SmtpMailSenderService.cs" />
+    <Compile Include="Services\MailSenderService.cs" />
     <Compile Include="ValidationRules\RegExValidationRule.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
@@ -252,11 +246,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <EmbeddedResource Include="Data\EF\Migrations\201907110640134_Initial.resx">
-      <DependentUpon>201907110640134_Initial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Data\EF\Migrations\201907110733496_SchedulerTasksAdded.resx">
-      <DependentUpon>201907110733496_SchedulerTasksAdded.cs</DependentUpon>
+    <EmbeddedResource Include="Data\EF\Migrations\201907111838034_Initial.resx">
+      <DependentUpon>201907111838034_Initial.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

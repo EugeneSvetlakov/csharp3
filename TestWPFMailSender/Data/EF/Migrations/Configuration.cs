@@ -34,16 +34,6 @@ namespace MailSender.Data.EF.Migrations // -MigrationsDirectory Data\EF\Migratio
 
             //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
             //  to avoid creating duplicate seed data.
-
-            if (!db.SendStatuses.Any())
-            {
-                //todo
-                db.SendStatuses.Add(SendStatusEnum.Error);
-                db.SendStatuses.Add(SendStatusEnum.Ok);
-                db.SendStatuses.Add(SendStatusEnum.Processing);
-                db.SendStatuses.Add(SendStatusEnum.Unknown);
-            }
-
         }
     }
 }

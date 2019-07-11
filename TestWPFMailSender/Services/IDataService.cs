@@ -70,4 +70,9 @@ namespace MailSender.Services
         /// <param name="item">представитель класса</param>
         Task<bool> DeleteAsync(int id);
     }
+
+    public interface ISenderService<T>
+    {
+        void Send(T item);
+    }
 }

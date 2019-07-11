@@ -29,8 +29,7 @@ namespace MailSender.Data.EF
 
         public DbSet<RecipientsList> RecipientsLists { get; set; }
 
-        public DbSet<SchedulerTask> SchedulerTasks { get; set; }
+        public DbSet<MailTask> MailTask { get; set; }
 
-        public DbSet<SendStatus> SendStatuses { get; set; }
     }
 }

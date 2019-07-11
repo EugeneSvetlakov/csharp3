@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using MailSender.Data.BaseEntityes;
 using MailSender.Data.Memory;
 
 namespace MailSender
@@ -24,7 +25,7 @@ namespace MailSender
         {
             InitializeComponent();
             this.tbMsg.Text = $"SendStatus is {o.result}. Status message: {o.errMsg}";
-            if (o.result == sendStatus.Error)
+            if (o.result == SendStatusEnum.Error)
             {
                 this.tbMsg.Foreground = Brushes.Red;
             }

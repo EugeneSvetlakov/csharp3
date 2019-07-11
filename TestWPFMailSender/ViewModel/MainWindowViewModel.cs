@@ -18,11 +18,12 @@ namespace MailSender.ViewModel
     {
         #region MainWindowViewModel
         public MainWindowViewModel(
-            IRecipientsDataService RecipientsDataService, 
-            ISendersDataService SendersDataService,
-            IServersDataService MailServersDataService,
-            IMailMessageDataService MailTemplatesDataService,
-            IMailSenderService MailSenderService)
+            IRecipientsDataService RecipientsDataService
+            ,ISendersDataService SendersDataService
+            ,IServersDataService MailServersDataService
+            ,IMailMessageDataService MailTemplatesDataService
+            //,IMailSenderService MailSenderService
+            )
         {
             _RecipientsDataService = RecipientsDataService;
             GetRecipientsDataCommand = new RelayCommand(OnGetRecipientsDataCommandExecuted, CanGetRecipientsDataCommandExecuted);
@@ -52,7 +53,7 @@ namespace MailSender.ViewModel
             DeleteMailTemplateCommand = new RelayCommand<MailMessage>(OnDeleteMailTemplateCommandExecuted, CanDeleteMailTemplateCommandExecuted);
             //GetMailTemplates();
 
-            _MailSenderService = MailSenderService;
+            //_MailSenderService = MailSenderService;
             //todo Commands for MailSenderService
 
             //Отчеты
@@ -413,8 +414,8 @@ namespace MailSender.ViewModel
 
         #endregion
 
-        #region SmtpMailSenderService
-        private readonly IMailSenderService _MailSenderService;
+        #region MailSenderService
+        //private readonly IMailSenderService _MailSenderService;
 
         #endregion
     }

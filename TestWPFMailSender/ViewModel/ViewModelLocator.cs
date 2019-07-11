@@ -7,6 +7,8 @@ using MailSender.Services;
 using MailSender.Services.Linq2Sql;
 using MailSender.Services.InMemory;
 using MailSender.Data.Linq2Sql;
+using MailSender.Data.EF;
+using MailSender.Services.EF;
 
 namespace MailSender.ViewModel
 {
@@ -37,17 +39,39 @@ namespace MailSender.ViewModel
 
             //Определение каким сервисом работы с данными пользоваться: InMemmory/Linq2Sql/EF
             var services = SimpleIoc.Default;
+
+            #region Linq2Sql
+            //services.Register(() => new MailSenderDbContext()); //Инициализирует подключение к БД через Linq2Sql
+            //services.Register<IRecipientsDataService, RecipientsDataServicesLinq2Sql>(); 
+            //services.Register<ISendersDataService, SendersDataServicesLinq2Sql>(); 
+            //services.Register<IServersDataService, MailServersDataServicesLinq2Sql>(); 
+            //services.Register<IMailMessageDataService, MailTemplatesDataServicesLinq2Sql>(); 
+            #endregion
             
-            services.Register(() => new MailSenderDbContext()); //Инициализирует подключение к БД через Linq2Sql
-            services.Register<IRecipientsDataService, RecipientsDataInMemory>(); //Данные в памяти
-            //services.Register<IRecipientsDataService, RecipientsDataServicesLinq2Sql>(); //Данные получателей в БД через Linq2Sql
-            services.Register<IServersDataService, ServersDataInMemory>(); //Данные серверов в памяти
-            //services.Register<IServersDataService, MailServersDataServicesLinq2Sql>(); //Данные серверов в БД через Linq2Sql
-            services.Register<ISendersDataService, SendersDataInMemory>(); //Данные отправителей в памяти
-            //services.Register<ISendersDataService, SendersDataServicesLinq2Sql>(); //Данные в БД через Linq2Sql
-            services.Register<IMailMessageDataService, MailMessagesDataInMemory>(); //Данные в памяти
-            //services.Register<IMailMessageDataService, MailTemplatesDataServicesLinq2Sql>(); //Данные в БД через Linq2Sql
-            services.Register<IMailSenderService, SmtpMailSenderService>(); //Сервис рассылки сообщений
+            #region EntityFramework
+            services.Register(() => new MailSenderDB()); //Инициализирует подключение к БД через EF
+            services.Register<IRecipientsDataService, RecipientsEFData>();
+            services.Register<ISendersDataService, SendersEFData>();
+            services.Register<IServersDataService, ServersEFData>();
+            services.Register<IMailMessageDataService, MailMessagesEFData>();
+            //services.Register<ISendTasksDataService, SendTasksEFData>(); 
+            //services.Register<IRecipientsListsDataService, RecipientsListsEFData>(); 
+            #endregion
+
+            #region InMemory
+            //services.Register<IRecipientsDataService, RecipientsDataInMemory>();
+            //services.Register<ISendersDataService, SendersDataInMemory>();
+            //services.Register<IServersDataService, ServersDataInMemory>();
+            //services.Register<IMailMessageDataService, MailMessagesDataInMemory>();
+            #endregion
+
+            #region Отправка Задачи рассылки
+            // Сервис заваливает программу. 
+            // И его нужно переписать под отправку созданных SchedulerTasks:
+            // 1) неменденная отправка из основной программы
+            // 2) Отложенная демоном(службой) отложенной отправки 
+            //services.Register<IMailSenderService, MailSenderService>(); //Сервис рассылки сообщений
+            #endregion
 
             services.Register<MainViewModel>();
             services.Register<MainWindowViewModel>();
