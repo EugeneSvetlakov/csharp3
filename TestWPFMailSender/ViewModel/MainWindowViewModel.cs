@@ -162,7 +162,7 @@ namespace MailSender.ViewModel
 
         private void OnSaveRecipientCommandExecuted(Recipient item)
         {
-            _RecipientsDataService.Edit(item);
+            _RecipientsDataService.Edit(item.id, item);
         }
 
         public ICommand DeleteRecipientCommand { get; }
@@ -174,7 +174,7 @@ namespace MailSender.ViewModel
 
         private void OnDeleteRecipientCommandExecuted(Recipient item)
         {
-            _RecipientsDataService.Delete(item);
+            _RecipientsDataService.Delete(item.id);
             GetRecipientsData();
         }
 
@@ -240,7 +240,7 @@ namespace MailSender.ViewModel
 
         private void OnSaveSendersCommandExecuted(Sender item)
         {
-            _SendersDataService.Edit(item);
+            _SendersDataService.Edit(item.id, item);
         }
 
         public ICommand DeleteSenderCommand { get; }
@@ -252,7 +252,7 @@ namespace MailSender.ViewModel
 
         private void OnDeleteSenderCommandExecuted(Sender item)
         {
-            _SendersDataService.Delete(item);
+            _SendersDataService.Delete(item.id);
             GetSenders();
         }
 
@@ -313,7 +313,7 @@ namespace MailSender.ViewModel
 
         private void OnSaveMailTemplatesCommandExecuted(MailMessage item)
         {
-            _MailTemplatesDataService.Edit(item);
+            _MailTemplatesDataService.Edit(item.id, item);
         }
 
         public ICommand DeleteMailTemplateCommand { get; }
@@ -325,7 +325,7 @@ namespace MailSender.ViewModel
 
         private void OnDeleteMailTemplateCommandExecuted(MailMessage item)
         {
-            _MailTemplatesDataService.Delete(item);
+            _MailTemplatesDataService.Delete(item.id);
             GetMailTemplates();
         }
 
@@ -395,7 +395,7 @@ namespace MailSender.ViewModel
 
         private void OnSaveMailServersCommandExecuted(Server item)
         {
-            _MailServersDataService.Edit(item);
+            _MailServersDataService.Edit(item.id, item);
         }
 
         public ICommand DeleteMailServerCommand { get; }
@@ -407,7 +407,7 @@ namespace MailSender.ViewModel
 
         private void OnDeleteMailServerCommandExecuted(Server item)
         {
-            _MailServersDataService.Delete(item);
+            _MailServersDataService.Delete(item.id);
             GetMailServersData();
         }
 

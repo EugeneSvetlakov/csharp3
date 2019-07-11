@@ -133,6 +133,15 @@
     <Compile Include="Data\BaseEntityes\NamedEntity.cs" />
     <Compile Include="Data\csv\WorkCSV.cs" />
     <Compile Include="Data\EF\MailSenderDB.cs" />
+    <Compile Include="Data\EF\Migrations\201907110640134_Initial.cs" />
+    <Compile Include="Data\EF\Migrations\201907110640134_Initial.Designer.cs">
+      <DependentUpon>201907110640134_Initial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Data\EF\Migrations\201907110733496_SchedulerTasksAdded.cs" />
+    <Compile Include="Data\EF\Migrations\201907110733496_SchedulerTasksAdded.Designer.cs">
+      <DependentUpon>201907110733496_SchedulerTasksAdded.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Data\EF\Migrations\Configuration.cs" />
     <Compile Include="Data\Encryptor\StringEncryptor.cs" />
     <Compile Include="Data\Linq2Sql\MailSenderDbContext.designer.cs">
       <AutoGen>True</AutoGen>
@@ -140,8 +149,10 @@
       <DependentUpon>MailSenderDbContext.dbml</DependentUpon>
     </Compile>
     <Compile Include="Data\Linq2Sql\Recipient.cs" />
+    <Compile Include="Data\RecipientsList.cs" />
     <Compile Include="Data\Sender.cs" />
     <Compile Include="Data\Recipient.cs" />
+    <Compile Include="Data\SchedulerTask.cs" />
     <Compile Include="Reports\Report.cs" />
     <Compile Include="Services\EF\EFData.cs" />
     <Compile Include="Services\EF\MailMessagesEFData.cs" />
@@ -235,6 +246,12 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <EmbeddedResource Include="Data\EF\Migrations\201907110640134_Initial.resx">
+      <DependentUpon>201907110640134_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Data\EF\Migrations\201907110733496_SchedulerTasksAdded.resx">
+      <DependentUpon>201907110733496_SchedulerTasksAdded.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
