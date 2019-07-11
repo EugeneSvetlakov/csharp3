@@ -1,5 +1,6 @@
 namespace MailSender.Data.EF.Migrations // -MigrationsDirectory Data\EF\Migrations
 {
+    using MailSender.Data.BaseEntityes;
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
@@ -27,12 +28,22 @@ namespace MailSender.Data.EF.Migrations // -MigrationsDirectory Data\EF\Migratio
             MigrationsDirectory = @"Data\EF\Migrations";
         }
 
-        protected override void Seed(MailSender.Data.EF.MailSenderDB context)
+        protected override void Seed(MailSender.Data.EF.MailSenderDB db)
         {
             //  This method will be called after migrating to the latest version.
 
             //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
             //  to avoid creating duplicate seed data.
+
+            if (!db.SendStatuses.Any())
+            {
+                //todo
+                db.SendStatuses.Add(SendStatusEnum.Error);
+                db.SendStatuses.Add(SendStatusEnum.Ok);
+                db.SendStatuses.Add(SendStatusEnum.Processing);
+                db.SendStatuses.Add(SendStatusEnum.Unknown);
+            }
+
         }
     }
 }

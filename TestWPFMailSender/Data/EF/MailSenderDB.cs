@@ -1,6 +1,9 @@
-﻿using System;
+﻿using MailSender.Data.BaseEntityes;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data.Entity;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,5 +30,7 @@ namespace MailSender.Data.EF
         public DbSet<RecipientsList> RecipientsLists { get; set; }
 
         public DbSet<SchedulerTask> SchedulerTasks { get; set; }
+
+        public DbSet<SendStatus> SendStatuses { get; set; }
     }
 }

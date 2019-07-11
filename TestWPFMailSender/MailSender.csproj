@@ -129,8 +129,11 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Data\BaseEntityes\Entity.cs" />
+    <Compile Include="Data\BaseEntityes\Extensions.cs" />
     <Compile Include="Data\BaseEntityes\Human.cs" />
     <Compile Include="Data\BaseEntityes\NamedEntity.cs" />
+    <Compile Include="Data\SendStatus.cs" />
+    <Compile Include="Data\BaseEntityes\SendStatusEnum.cs" />
     <Compile Include="Data\csv\WorkCSV.cs" />
     <Compile Include="Data\EF\MailSenderDB.cs" />
     <Compile Include="Data\EF\Migrations\201907110640134_Initial.cs" />

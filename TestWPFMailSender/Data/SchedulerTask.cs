@@ -19,4 +19,15 @@ namespace MailSender.Data
 
         public virtual Server Server { get; set; }
     }
+
+    
+
+
+
+    public class TaskReport : Entity
+    {
+        public virtual SchedulerTask SchedulerTask { get; set; }
+
+        public virtual SendStatus SendStatus { get; set; }
+    }
 }
