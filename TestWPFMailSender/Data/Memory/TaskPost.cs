@@ -15,7 +15,7 @@ namespace MailSender.Data.Memory
         string id;
         DateTime CreateDate = DateTime.Now;
         DateTime SendDate;
-        MailMessage mailTemplate;
+        Message mailTemplate;
         Server mailServer;
         List<Recipient> Recipients;
         SendStatusEnum sendStatus;

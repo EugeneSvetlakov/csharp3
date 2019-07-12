@@ -139,6 +139,10 @@
     <Compile Include="Data\EF\Migrations\201907111838034_Initial.Designer.cs">
       <DependentUpon>201907111838034_Initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Data\EF\Migrations\201907120834447_UpdateMailTasks.cs" />
+    <Compile Include="Data\EF\Migrations\201907120834447_UpdateMailTasks.Designer.cs">
+      <DependentUpon>201907120834447_UpdateMailTasks.cs</DependentUpon>
+    </Compile>
     <Compile Include="Data\EF\Migrations\Configuration.cs" />
     <Compile Include="Data\Encryptor\StringEncryptor.cs" />
     <Compile Include="Data\Linq2Sql\MailSenderDbContext.designer.cs">
@@ -153,17 +157,17 @@
     <Compile Include="Data\MailTask.cs" />
     <Compile Include="Reports\Report.cs" />
     <Compile Include="Services\EF\EFData.cs" />
-    <Compile Include="Services\EF\MailMessagesEFData.cs" />
+    <Compile Include="Services\EF\MessagesEFData.cs" />
     <Compile Include="Services\EF\RecipientsEFData.cs" />
     <Compile Include="Services\EF\RecipientsListsEFData.cs" />
     <Compile Include="Services\EF\MailTasksEFData.cs" />
     <Compile Include="Services\EF\SendersEFData.cs" />
     <Compile Include="Services\EF\ServersEFData.cs" />
     <Compile Include="Services\IDataService.cs" />
-    <Compile Include="Services\IMailMessageDataService.cs" />
+    <Compile Include="Services\IMessageDataService.cs" />
     <Compile Include="Services\IMailSenderService.cs" />
     <Compile Include="Services\InMemory\DataInMemory.cs" />
-    <Compile Include="Services\InMemory\MailMessagesDataInMemory.cs" />
+    <Compile Include="Services\InMemory\MessagesDataInMemory.cs" />
     <Compile Include="Services\InMemory\SendersDataInMemory.cs" />
     <Compile Include="Services\InMemory\ServersDataInMemory.cs" />
     <Compile Include="Services\IRecipientsListsDataService.cs" />
@@ -206,6 +210,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\ServersControlView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="WpfMailSender.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -214,8 +222,11 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Data\MailMessage.cs" />
+    <Compile Include="Data\Message.cs" />
     <Compile Include="Data\Memory\TaskPost.cs" />
+    <Compile Include="View\ServersControlView.xaml.cs">
+      <DependentUpon>ServersControlView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WpfMailSender.xaml.cs">
       <DependentUpon>WpfMailSender.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -248,6 +259,9 @@
     </Compile>
     <EmbeddedResource Include="Data\EF\Migrations\201907111838034_Initial.resx">
       <DependentUpon>201907111838034_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Data\EF\Migrations\201907120834447_UpdateMailTasks.resx">
+      <DependentUpon>201907120834447_UpdateMailTasks.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

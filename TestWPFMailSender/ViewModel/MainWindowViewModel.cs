@@ -21,7 +21,8 @@ namespace MailSender.ViewModel
             IRecipientsDataService RecipientsDataService
             ,ISendersDataService SendersDataService
             ,IServersDataService MailServersDataService
-            ,IMailMessageDataService MailTemplatesDataService
+            ,IMessageDataService MailTemplatesDataService
+            ,IRecipientsListsDataService RecipientsListsDataService
             //,IMailSenderService MailSenderService
             )
         {
@@ -49,12 +50,19 @@ namespace MailSender.ViewModel
             _MailTemplatesDataService = MailTemplatesDataService;
             UpdateMailTemplatesCommand = new RelayCommand(OnUpdateMailTemplatesCommandExecuted, CanUpdateMailTemplatesCommandExecuted);
             CreateMailTemplateCommand = new RelayCommand(OnCreateMailTemplateCommandExecuted, CanCreateMailTemplateCommandExecuted);
-            SaveMailTemplatesCommand = new RelayCommand<MailMessage>(OnSaveMailTemplatesCommandExecuted, CanSaveMailTemplatesCommandExecuted);
-            DeleteMailTemplateCommand = new RelayCommand<MailMessage>(OnDeleteMailTemplateCommandExecuted, CanDeleteMailTemplateCommandExecuted);
+            SaveMailTemplatesCommand = new RelayCommand<Message>(OnSaveMailTemplatesCommandExecuted, CanSaveMailTemplatesCommandExecuted);
+            DeleteMailTemplateCommand = new RelayCommand<Message>(OnDeleteMailTemplateCommandExecuted, CanDeleteMailTemplateCommandExecuted);
             //GetMailTemplates();
 
             //_MailSenderService = MailSenderService;
             //todo Commands for MailSenderService
+
+            //RecipientsLists
+            _RecipientsListsDataService = RecipientsListsDataService;
+            UpdateRecipientsListsCommand = new RelayCommand(OnUpdateRecipientsListsCommandExecuted, CanUpdateRecipientsListsCommandExecuted);
+            CreateRecipientsListsCommand = new RelayCommand(OnCreateRecipientsListsCommandExecuted, CanCreateRecipientsListsCommandExecuted);
+            DeleteRecipientsListsCommand = new RelayCommand<RecipientsList>(OnDeleteRecipientsListsCommandExecuted, CanDeleteRecipientsListsCommandExecuted);
+
 
             //Отчеты
             CreateReportRecipientsCommand = new RelayCommand(OnCreateReportRecipientsCommand, CanCreateReportRecipientsCommand);
@@ -185,6 +193,68 @@ namespace MailSender.ViewModel
         }
         #endregion
 
+        #region RecipientsLists
+        private readonly IRecipientsListsDataService _RecipientsListsDataService;
+
+        private ObservableCollection<RecipientsList> _RecipientsLists;
+        public ObservableCollection<RecipientsList> RecipientsLists
+        {
+            get => _RecipientsLists;
+            private set => Set(ref _RecipientsLists, value);
+        }
+
+        private RecipientsList _CurrentRecipientsList;
+        public RecipientsList CurrentRecipientsList
+        {
+            get => _CurrentRecipientsList;
+            private set => Set(ref _CurrentRecipientsList, value);
+        }
+
+        public void GetRecipientsLists()
+        {
+            RecipientsLists = new ObservableCollection<RecipientsList>(_RecipientsListsDataService.GetAll());
+        }
+
+        public ICommand UpdateRecipientsListsCommand { get; }
+        private bool CanUpdateRecipientsListsCommandExecuted() => true;
+        private void OnUpdateRecipientsListsCommandExecuted()
+        {
+            GetRecipientsLists();
+        }
+
+        public ICommand CreateRecipientsListsCommand { get; }
+
+        private bool CanCreateRecipientsListsCommandExecuted() => true;
+
+        private void OnCreateRecipientsListsCommandExecuted()
+        {
+            var new_RecipientsList = new Collection<Recipient>();
+            var new_item = new RecipientsList()
+            {
+                Name = "NewSendList",
+                Recipients = new_RecipientsList,
+                Comment = ""
+            };
+            var result = _RecipientsListsDataService.Add(new_item);
+            GetRecipientsLists();
+            CurrentRecipientsList = new_item;
+        }
+
+        public ICommand DeleteRecipientsListsCommand { get; }
+
+        private bool CanDeleteRecipientsListsCommandExecuted(RecipientsList item)
+        {
+            return item != null;
+        }
+
+        private void OnDeleteRecipientsListsCommandExecuted(RecipientsList item)
+        {
+            _RecipientsListsDataService.Delete(item.id);
+            GetRecipientsLists();
+        }
+
+        #endregion
+
         #region Senders
         private readonly ISendersDataService _SendersDataService;
         private ObservableCollection<Sender> _Senders;
@@ -260,21 +330,21 @@ namespace MailSender.ViewModel
         #endregion
 
         #region MailTemplates
-        private readonly IMailMessageDataService _MailTemplatesDataService;
-        private ObservableCollection<MailMessage> _MailTemplates;
-        public ObservableCollection<MailMessage> MailTemplates
+        private readonly IMessageDataService _MailTemplatesDataService;
+        private ObservableCollection<Message> _MailTemplates;
+        public ObservableCollection<Message> MailTemplates
         {
             get => _MailTemplates;
             private set => Set(ref _MailTemplates, value);
         }
         public void GetMailTemplates()
         {
-            MailTemplates = new ObservableCollection<MailMessage>(_MailTemplatesDataService.GetAll());
+            MailTemplates = new ObservableCollection<Message>(_MailTemplatesDataService.GetAll());
         }
 
-        private MailMessage _CurrentMailTemplate;
+        private Message _CurrentMailTemplate;
 
-        public MailMessage CurrentMailTemplate
+        public Message CurrentMailTemplate
         {
             get => _CurrentMailTemplate;
             set => Set(ref _CurrentMailTemplate, value);
@@ -295,7 +365,7 @@ namespace MailSender.ViewModel
 
         private void OnCreateMailTemplateCommandExecuted()
         {
-            var new_item = new MailMessage()
+            var new_item = new Message()
             {
                 Subject = "NewSubject",
                 Body = "NewMessage"
@@ -307,24 +377,24 @@ namespace MailSender.ViewModel
 
         public ICommand SaveMailTemplatesCommand { get; }
 
-        private bool CanSaveMailTemplatesCommandExecuted(MailMessage item)
+        private bool CanSaveMailTemplatesCommandExecuted(Message item)
         {
             return item != null;
         }
 
-        private void OnSaveMailTemplatesCommandExecuted(MailMessage item)
+        private void OnSaveMailTemplatesCommandExecuted(Message item)
         {
             _MailTemplatesDataService.Edit(item.id, item);
         }
 
         public ICommand DeleteMailTemplateCommand { get; }
 
-        private bool CanDeleteMailTemplateCommandExecuted(MailMessage item)
+        private bool CanDeleteMailTemplateCommandExecuted(Message item)
         {
             return item != null;
         }
 
-        private void OnDeleteMailTemplateCommandExecuted(MailMessage item)
+        private void OnDeleteMailTemplateCommandExecuted(Message item)
         {
             _MailTemplatesDataService.Delete(item.id);
             GetMailTemplates();

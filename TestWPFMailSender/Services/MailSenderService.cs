@@ -27,7 +27,7 @@ namespace MailSender.Services
             this._Password = Password;
         }
 
-        public void Send(MailMessage Message, Sender From, Recipient To)
+        public void Send(Message Message, Sender From, Recipient To)
         {
             using (var server = new System.Net.Mail.SmtpClient(_Host, _Port) { EnableSsl = _UseSSL })
             {
@@ -43,7 +43,7 @@ namespace MailSender.Services
             }
         }
 
-        public void Send(MailMessage Message, Sender From, IEnumerable<Recipient> To)
+        public void Send(Message Message, Sender From, IEnumerable<Recipient> To)
         {
             foreach(var recipient in To)
             {
@@ -51,7 +51,7 @@ namespace MailSender.Services
             }
         }
 
-        public void SendParallel(MailMessage Message, Sender From, IEnumerable<Recipient> To)
+        public void SendParallel(Message Message, Sender From, IEnumerable<Recipient> To)
         {
             foreach (var recipient in To)
             {
@@ -60,7 +60,7 @@ namespace MailSender.Services
             }
         }
 
-        public async Task SendAsync(MailMessage Message, Sender From, Recipient To)
+        public async Task SendAsync(Message Message, Sender From, Recipient To)
         {
             using (var server = new System.Net.Mail.SmtpClient(_Host, _Port) { EnableSsl = _UseSSL })
             {
@@ -79,7 +79,7 @@ namespace MailSender.Services
         }
 
         public async Task SendAsync(
-            MailMessage Message, 
+            Message Message, 
             Sender From, 
             IEnumerable<Recipient> To, 
             IProgress<double> Progress = null, 

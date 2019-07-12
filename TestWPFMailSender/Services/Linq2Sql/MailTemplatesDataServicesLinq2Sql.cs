@@ -7,7 +7,7 @@ using MailSender.Data;
 
 namespace MailSender.Services.Linq2Sql
 {
-    public class MailTemplatesDataServicesLinq2Sql : IMailMessageDataService
+    public class MailTemplatesDataServicesLinq2Sql : IMessageDataService
     {
         private readonly MailSender.Data.Linq2Sql.MailSenderDbContext _Db;
 
@@ -16,9 +16,9 @@ namespace MailSender.Services.Linq2Sql
             _Db = db;
         }
 
-        public IEnumerable<MailMessage> GetAll()
+        public IEnumerable<Message> GetAll()
         {
-            return _Db.MailTemplates.Select(r => new MailMessage
+            return _Db.MailTemplates.Select(r => new Message
             {
                 id = r.id,
                 Subject = r.subject,
@@ -26,24 +26,24 @@ namespace MailSender.Services.Linq2Sql
             }).ToArray();
         }
 
-        public Task<IEnumerable<MailMessage>> GetAllAsync()
+        public Task<IEnumerable<Message>> GetAllAsync()
         {
             throw new NotImplementedException();
         }
 
-        public MailMessage GetById(int id) => _Db.MailTemplates.Select(r => new MailMessage
+        public Message GetById(int id) => _Db.MailTemplates.Select(r => new Message
         {
             id = r.id,
             Subject = r.subject,
             Body = r.message
         }).FirstOrDefault(r => r.id == id);
 
-        public Task<MailMessage> GetByIdAsync(int id)
+        public Task<Message> GetByIdAsync(int id)
         {
             throw new NotImplementedException();
         }
 
-        public int Add(MailMessage item)
+        public int Add(Message item)
         {
             if (item.id != 0) return -1; 
             _Db.MailTemplates.InsertOnSubmit(new MailSender.Data.Linq2Sql.MailTemplate
@@ -63,12 +63,12 @@ namespace MailSender.Services.Linq2Sql
             }
         }
 
-        public Task<int> AddAsync(MailMessage item)
+        public Task<int> AddAsync(Message item)
         {
             throw new NotImplementedException();
         }
 
-        public MailMessage Edit(int id, MailMessage item)
+        public Message Edit(int id, Message item)
         {
             try
             {
@@ -81,7 +81,7 @@ namespace MailSender.Services.Linq2Sql
             }
         }
 
-        public Task<MailMessage> EditAsync(int id, MailMessage item)
+        public Task<Message> EditAsync(int id, Message item)
         {
             throw new NotImplementedException();
         }

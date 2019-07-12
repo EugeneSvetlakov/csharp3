@@ -23,7 +23,7 @@ namespace MailSender.Data.EF
 
         public DbSet<Sender> Senders { get; set; }
 
-        public DbSet<MailMessage> MailMessages { get; set; }
+        public DbSet<Message> Messages { get; set; }
 
         public DbSet<Server> Servers { get; set; }
 

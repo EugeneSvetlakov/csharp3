@@ -11,11 +11,11 @@ namespace MailSender.Data
     {
         public DateTime Time { get; set; }
 
-        public virtual MailMessage Message { get; set; }
+        public virtual Message Message { get; set; }
 
         public virtual Sender Sender { get; set; }
 
-        public virtual RecipientsList Recipients { get; set; }
+        public virtual RecipientsList RecipientsList { get; set; }
 
         public virtual Server Server { get; set; }
 

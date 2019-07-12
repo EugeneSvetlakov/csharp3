@@ -18,7 +18,7 @@ namespace MailSender.Services.EF
             db_item.Time = item.Time;
             db_item.Message = item.Message;
             db_item.Sender = item.Sender;
-            db_item.Recipients = item.Recipients;
+            db_item.RecipientsList = item.RecipientsList;
             db_item.Server = item.Server;
             db_item.SendStatusEnum = item.SendStatusEnum;
             Commit();
@@ -34,7 +34,7 @@ namespace MailSender.Services.EF
             db_item.Time = item.Time;
             db_item.Message = item.Message;
             db_item.Sender = item.Sender;
-            db_item.Recipients = item.Recipients;
+            db_item.RecipientsList = item.RecipientsList;
             db_item.Server = item.Server;
             db_item.SendStatusEnum = item.SendStatusEnum;
             await CommitAsync();

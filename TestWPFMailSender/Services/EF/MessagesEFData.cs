@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace MailSender.Services.EF
 {
-    public class MailMessagesEFData : EFData<MailMessage>, IMailMessageDataService
+    public class MessagesEFData : EFData<Message>, IMessageDataService
     {
-        public MailMessagesEFData(MailSenderDB Db) : base(Db) { }
+        public MessagesEFData(MailSenderDB Db) : base(Db) { }
 
-        public override MailMessage Edit(int id, MailMessage item)
+        public override Message Edit(int id, Message item)
         {
             if (item is null) throw new ArgumentNullException(nameof(item));
 
@@ -24,7 +24,7 @@ namespace MailSender.Services.EF
             return db_item;
         }
 
-        public override async Task<MailMessage> EditAsync(int id, MailMessage item)
+        public override async Task<Message> EditAsync(int id, Message item)
         {
             if (item is null) throw new ArgumentNullException(nameof(item));
 

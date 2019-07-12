@@ -18,7 +18,7 @@ namespace MailSender.Data.EF.Migrations // -MigrationsDirectory Data\EF\Migratio
     // Add-Migration Initial -StartUpProjectName MailSender -Verbose
 
     // Выполнение миграции
-    // Update-Database -Verbose -StartUpProjectName MailSender
+    // Update-Database -StartUpProjectName MailSender -Verbose
 
     internal sealed class Configuration : DbMigrationsConfiguration<MailSender.Data.EF.MailSenderDB>
     {

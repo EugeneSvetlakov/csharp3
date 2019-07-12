@@ -7,5 +7,5 @@ using MailSender.Data;
 
 namespace MailSender.Services
 {
-    public interface IMailMessageDataService : IDataService<MailMessage> { }
+    public interface IMessageDataService : IDataService<Message> { }
 }

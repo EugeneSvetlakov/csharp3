@@ -31,6 +31,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lesson8", "lesson8", "{98AE
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchedulerDaemon", "SchedulerDaemon\SchedulerDaemon.csproj", "{9F21315E-617D-466F-AD7D-0F8006E890C6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailSender.lib", "MailSender.lib\MailSender.lib.csproj", "{6BB6A6DC-6E47-45AA-A9FF-4CB19551C1B7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,10 @@ Global
 		{9F21315E-617D-466F-AD7D-0F8006E890C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9F21315E-617D-466F-AD7D-0F8006E890C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9F21315E-617D-466F-AD7D-0F8006E890C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6BB6A6DC-6E47-45AA-A9FF-4CB19551C1B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BB6A6DC-6E47-45AA-A9FF-4CB19551C1B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BB6A6DC-6E47-45AA-A9FF-4CB19551C1B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BB6A6DC-6E47-45AA-A9FF-4CB19551C1B7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

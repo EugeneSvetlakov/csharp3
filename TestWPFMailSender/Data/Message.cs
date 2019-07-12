@@ -10,7 +10,7 @@ namespace MailSender.Data
     /// <summary>
     /// Сообщение электронной почты
     /// </summary>
-    public class MailMessage : Entity
+    public class Message : Entity
     {
         public string Subject { get; set; }
         public string Body { get; set; }

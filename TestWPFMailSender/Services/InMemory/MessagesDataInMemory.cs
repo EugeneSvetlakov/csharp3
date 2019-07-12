@@ -3,9 +3,9 @@ using MailSender.Data;
 
 namespace MailSender.Services.InMemory
 {
-    public class MailMessagesDataInMemory : DataInMemory<MailMessage>, IMailMessageDataService
+    public class MessagesDataInMemory : DataInMemory<Message>, IMessageDataService
     {
-        public override MailMessage Edit(int id, MailMessage item)
+        public override Message Edit(int id, Message item)
         {
             if (item is null)
                 throw new ArgumentNullException(nameof(item));
