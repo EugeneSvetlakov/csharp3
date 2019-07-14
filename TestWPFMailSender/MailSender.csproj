@@ -143,6 +143,10 @@
     <Compile Include="Data\EF\Migrations\201907120834447_UpdateMailTasks.Designer.cs">
       <DependentUpon>201907120834447_UpdateMailTasks.cs</DependentUpon>
     </Compile>
+    <Compile Include="Data\EF\Migrations\201907131827547_UpdateMailTaskDateTimeField.cs" />
+    <Compile Include="Data\EF\Migrations\201907131827547_UpdateMailTaskDateTimeField.Designer.cs">
+      <DependentUpon>201907131827547_UpdateMailTaskDateTimeField.cs</DependentUpon>
+    </Compile>
     <Compile Include="Data\EF\Migrations\Configuration.cs" />
     <Compile Include="Data\Encryptor\StringEncryptor.cs" />
     <Compile Include="Data\Linq2Sql\MailSenderDbContext.designer.cs">
@@ -181,6 +185,7 @@
     <Compile Include="Services\Linq2Sql\SendersDataServicesLinq2Sql.cs" />
     <Compile Include="Services\Linq2Sql\RecipientsDataServicesLinq2Sql.cs" />
     <Compile Include="Services\MailSenderService.cs" />
+    <Compile Include="ValidationRules\NameValidationRules.cs" />
     <Compile Include="ValidationRules\RegExValidationRule.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
@@ -262,6 +267,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Data\EF\Migrations\201907120834447_UpdateMailTasks.resx">
       <DependentUpon>201907120834447_UpdateMailTasks.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Data\EF\Migrations\201907131827547_UpdateMailTaskDateTimeField.resx">
+      <DependentUpon>201907131827547_UpdateMailTaskDateTimeField.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

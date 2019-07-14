@@ -25,16 +25,28 @@ namespace MailSender.lib.Services
                     msg.From = new System.Net.Mail.MailAddress(From.Address, From.Name);
                     msg.To.Add(new System.Net.Mail.MailAddress(To.Address, To.Name));
 
-                    try
+                    #region Заглушка для тестов
+                    int RandomInt = DateTime.Now.Millisecond;
+                    if (RandomInt != 250 || RandomInt != 350)
                     {
-                        smtpClient.Send(msg);
                         return true;
                     }
-                    catch (Exception)
+                    else
                     {
-                        //ToDo: написать логер ошибок
                         return false;
                     }
+                    #endregion
+                    
+                    //try
+                    //{
+                    //    smtpClient.Send(msg);
+                    //    return true;
+                    //}
+                    //catch (Exception)
+                    //{
+                    //    //ToDo: написать логер ошибок
+                    //    return false;
+                    //}
                 }
             }
         }
@@ -59,7 +71,10 @@ namespace MailSender.lib.Services
             ,CancellationToken Cancel = default)
         {
             #region Последовательный Асинхронный процесс
-            if(mailTask.SendStatusEnum == SendStatusEnum.Unknown)
+            bool good_status = mailTask.SendStatusEnum != SendStatusEnum.Canceled 
+                || mailTask.SendStatusEnum != SendStatusEnum.Processing 
+                || mailTask.SendStatusEnum == SendStatusEnum.Unknown;
+            if (good_status)
             {
                 mailTask.SendStatusEnum = SendStatusEnum.Processing;
                 var to = mailTask.RecipientsList.Recipients.ToArray();

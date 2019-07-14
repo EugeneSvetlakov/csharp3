@@ -31,7 +31,7 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-            <DockPanel LastChildFill="False" Validation.Error="OnNameValidationError">
+            <DockPanel LastChildFill="False">
                 <StackPanel Margin="5" Orientation="Horizontal" DockPanel.Dock="Top">
                     <TextBlock Text="Имя:" FontWeight="Bold" Foreground="Purple" Margin="0,0,5,0" VerticalAlignment="Center"/>
                     <TextBox MinWidth="80" 
@@ -39,7 +39,7 @@
                                             ValidatesOnDataErrors=True,
                                             ValidatesOnNotifyDataErrors=True,
                                             ValidatesOnExceptions=True, 
-                                            NotifyOnValidationError=True, 
+                                            NotifyOnValidationError=True,
                         UpdateSourceTrigger=PropertyChanged}"/>
                 </StackPanel>
                 <StackPanel Margin="5" Orientation="Horizontal" DockPanel.Dock="Top">

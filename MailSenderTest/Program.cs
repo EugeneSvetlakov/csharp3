@@ -9,6 +9,8 @@ namespace MailSenderTest
     {
         static void Main(string[] args)
         {
+            int ms = DateTime.Now.Millisecond;
+
             using (var db = new data.SongsDb())
             {
                 Console.WriteLine("Songs count - {0}", db.Songs.Count());

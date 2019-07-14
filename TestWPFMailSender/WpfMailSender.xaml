@@ -18,6 +18,7 @@
             <i:InvokeCommandAction Command="{Binding UpdateMailServersCommand}"/>
             <i:InvokeCommandAction Command="{Binding UpdateMailTemplatesCommand}"/>
             <i:InvokeCommandAction Command="{Binding UpdateSendersCommand}"/>
+            <i:InvokeCommandAction Command="{Binding GetRecipientsDataCommand}"/>
             <i:InvokeCommandAction Command="{Binding UpdateRecipientsListsCommand}"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
@@ -40,7 +41,7 @@
                         <ToolBar VerticalAlignment="Center">
                             <view:ListControler PanelName="[Сервер]" 
                                                 ItemSource="{Binding MailServers, UpdateSourceTrigger=PropertyChanged}"
-                                                SelectedIndex="0"
+                                                SelectedIndex="-1"
                                                 SelectedItem="{Binding CurrentMailServer}"
                                                 CreateCommand="{Binding CreateMailServersCommand}"
                                                 DeleteCommand="{Binding DeleteMailServerCommand}">
@@ -54,7 +55,7 @@
                         <ToolBar VerticalAlignment="Center">
                             <view:ListControler PanelName="[Отправитель]" 
                                                 ItemSource="{Binding Senders, UpdateSourceTrigger=PropertyChanged}"
-                                                SelectedIndex="0"
+                                                SelectedIndex="-1"
                                                 SelectedItem="{Binding CurrentSender}"
                                                 CreateCommand="{Binding CreateSenderCommand}"
                                                 DeleteCommand="{Binding DeleteSenderCommand}">
@@ -68,7 +69,7 @@
                         <ToolBar Band="1" VerticalAlignment="Center">
                             <view:ListControler PanelName="[Письмо]" 
                                                 ItemSource="{Binding MailTemplates, UpdateSourceTrigger=PropertyChanged}"
-                                                SelectedIndex="0"
+                                                SelectedIndex="-1"
                                                 SelectedItem="{Binding CurrentMailTemplate}"
                                                 CreateCommand="{Binding CreateMailTemplateCommand}"
                                                 DeleteCommand="{Binding DeleteMailTemplateCommand}">
@@ -82,8 +83,7 @@
                         <ToolBar Band="1" VerticalAlignment="Center">
                             <view:ListControler PanelName="[Список]" 
                                                 ItemSource="{Binding RecipientsLists, UpdateSourceTrigger=PropertyChanged}"
-                                                SelectedIndex="0"
-                                                SelectedItem="{Binding CurrentRecipientsLists}"
+                                                SelectedItem="{Binding CurrentRecipientsList}"
                                                 CreateCommand="{Binding CreateRecipientsListsCommand}"
                                                 DeleteCommand="{Binding DeleteRecipientsListsCommand}">
                                 <view:ListControler.ItemTemplate>
@@ -97,7 +97,27 @@
                     <StackPanel DockPanel.Dock="Bottom" >
                         <Button>Создать задание</Button>
                     </StackPanel>
-                    <view:RecipientsInfoViewer/>
+                    <StackPanel>
+                        <StackPanel 
+                            Margin="10"
+                            HorizontalAlignment="Center">
+                            <TextBlock FontSize="20" 
+                                       FontWeight="Bold" 
+                                       Text="Список получателей"/>
+                        </StackPanel>
+                        <StackPanel>
+                            <DataGrid 
+                                IsReadOnly="True" AutoGenerateColumns="False" 
+                                ItemsSource="{Binding CurrentRecipientsList.Recipients, UpdateSourceTrigger=PropertyChanged}">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="ID" MinWidth="10" Binding="{Binding id}"/>
+                                    <DataGridTextColumn Header="Имя" MinWidth="150" Binding="{Binding Name}"/>
+                                    <DataGridTextColumn Header="Email" MinWidth="150" Binding="{Binding Address}"/>
+                                    <DataGridTextColumn Header="Comment" Width="*" Binding="{Binding Comment}"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </StackPanel>
+                    </StackPanel>
                 </DockPanel>
             </TabItem>
             <TabItem Header="Планировщик">
@@ -241,6 +261,16 @@
                                     <Label>Delete</Label>
                                 </StackPanel>
                             </Button>
+                            <Button Command="{Binding SaveRecipientCommand}" CommandParameter="{Binding CurrentRecipient}">
+                                <StackPanel Orientation="Horizontal">
+                                    <fa:ImageAwesome Icon="Save" Height="18" Margin="2,0,2,0">
+                                        <fa:ImageAwesome.Effect>
+                                            <DropShadowEffect ShadowDepth="3" BlurRadius="3" Color="LightGreen"></DropShadowEffect>
+                                        </fa:ImageAwesome.Effect>
+                                    </fa:ImageAwesome>
+                                    <Label>SaveChanges</Label>
+                                </StackPanel>
+                            </Button>
                         </ToolBar>
                     </ToolBarTray>
                     <view:RecipientsInfoEditor></view:RecipientsInfoEditor>
@@ -271,6 +301,16 @@
                                     <Label>Delete</Label>
                                 </StackPanel>
                             </Button>
+                            <Button Command="{Binding SaveSendersCommand}" CommandParameter="{Binding CurrentSender}">
+                                <StackPanel Orientation="Horizontal">
+                                    <fa:ImageAwesome Icon="Save" Height="18" Margin="2,0,2,0">
+                                        <fa:ImageAwesome.Effect>
+                                            <DropShadowEffect ShadowDepth="3" BlurRadius="3" Color="LightGreen"></DropShadowEffect>
+                                        </fa:ImageAwesome.Effect>
+                                    </fa:ImageAwesome>
+                                    <Label>SaveChanges</Label>
+                                </StackPanel>
+                            </Button>
                         </ToolBar>
                     </ToolBarTray>
                     <DockPanel>
@@ -289,7 +329,7 @@
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>
                             </ListBox>
-                            <DockPanel LastChildFill="False" Validation.Error="OnNameValidationError">
+                            <DockPanel LastChildFill="False">
                                 <StackPanel Margin="5" Orientation="Horizontal" DockPanel.Dock="Top">
                                     <TextBlock Text="Имя:" FontWeight="Bold" Foreground="Purple" Margin="0,0,5,0" VerticalAlignment="Center"/>
                                     <TextBox MinWidth="80" 
@@ -354,7 +394,7 @@
                                     </StackPanel>
                                 </Button>
                                 <Button Command="{Binding DeleteMailServerCommand}"
-                                    CommandParameter="{Binding CurrentMailTemplate}">
+                                    CommandParameter="{Binding CurrentMailServer}">
                                     <StackPanel Orientation="Horizontal">
                                         <fa:ImageAwesome Icon="Trash" Height="18" Margin="2,0,2,0">
                                             <fa:ImageAwesome.Effect>
@@ -364,7 +404,8 @@
                                         <Label>Delete</Label>
                                     </StackPanel>
                                 </Button>
-                                <Button Command="{Binding SaveMailServersCommand}">
+                                <Button Command="{Binding SaveMailServersCommand}"
+                                        CommandParameter="{Binding CurrentMailServer}">
                                     <StackPanel Orientation="Horizontal">
                                         <fa:ImageAwesome Icon="Save" Height="18" Margin="2,0,2,0">
                                             <fa:ImageAwesome.Effect>
@@ -427,7 +468,136 @@
                 </DockPanel>
             </TabItem>
             <TabItem Header="Списки рассылки" IsEnabled="True">
-                <DockPanel></DockPanel>
+                <DockPanel>
+                    <ToolBarTray DockPanel.Dock="Top">
+                        <ToolBar VerticalAlignment="Center">
+                            <ToolBar>
+                                <Button Command="{Binding CreateRecipientsListsCommand}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <fa:ImageAwesome Icon="PlusSquare" Foreground="Blue" Height="18" Margin="2,0,2,0">
+                                            <fa:ImageAwesome.Effect>
+                                                <DropShadowEffect ShadowDepth="3" BlurRadius="3" Color="LightGray"></DropShadowEffect>
+                                            </fa:ImageAwesome.Effect>
+                                        </fa:ImageAwesome>
+                                        <Label>Add</Label>
+                                    </StackPanel>
+                                </Button>
+                                <Button Command="{Binding DeleteRecipientsListsCommand}"
+                                    CommandParameter="{Binding CurrentRecipientsList}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <fa:ImageAwesome Icon="Trash" Height="18" Margin="2,0,2,0">
+                                            <fa:ImageAwesome.Effect>
+                                                <DropShadowEffect ShadowDepth="3" BlurRadius="3" Color="LightGray"></DropShadowEffect>
+                                            </fa:ImageAwesome.Effect>
+                                        </fa:ImageAwesome>
+                                        <Label>Delete</Label>
+                                    </StackPanel>
+                                </Button>
+                                <Button Command="{Binding SaveRecipientsListsCommand}"
+                                        CommandParameter="{Binding CurrentRecipientsList}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <fa:ImageAwesome Icon="Save" Height="18" Margin="2,0,2,0">
+                                            <fa:ImageAwesome.Effect>
+                                                <DropShadowEffect ShadowDepth="3" BlurRadius="3" Color="LightGreen"></DropShadowEffect>
+                                            </fa:ImageAwesome.Effect>
+                                        </fa:ImageAwesome>
+                                        <Label>SaveChanges</Label>
+                                    </StackPanel>
+                                </Button>
+                                <StackPanel MinWidth="200" MaxWidth="300" Margin="5,0,5,0" Orientation="Horizontal" VerticalAlignment="Center">
+                                    <TextBlock Margin="7,0,7,0" VerticalAlignment="Center" Text="[Название]"/>
+                                    <TextBox Margin="7,0,7,0" VerticalAlignment="Center" Text="{Binding CurrentRecipientsList.Name}" MinWidth="150" MaxWidth="230"/>
+                                </StackPanel>
+                            </ToolBar>
+                        </ToolBar>
+                    </ToolBarTray>
+                    <GroupBox Header="Списки" DockPanel.Dock="Left">
+                        <ListBox Width="150" 
+                                 ItemsSource="{Binding RecipientsLists, UpdateSourceTrigger=PropertyChanged}"
+                                 SelectedItem="{Binding CurrentRecipientsList}">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Vertical">
+                                        <TextBlock Text="{Binding Name}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </GroupBox>
+                    <GroupBox Header="Все получатели" DockPanel.Dock="Right">
+                        <StackPanel Orientation="Vertical">
+                            <StackPanel>
+                                <Button Command="{Binding AddRecipientToListCommand}"
+                                        CommandParameter="{Binding CurrentRecipient}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <fa:ImageAwesome Icon="ArrowLeft" Foreground="WhiteSmoke" Height="18" Margin="2,0,7,0">
+                                            <fa:ImageAwesome.Effect>
+                                                <DropShadowEffect ShadowDepth="3" BlurRadius="3" Color="LightGray"></DropShadowEffect>
+                                            </fa:ImageAwesome.Effect>
+                                        </fa:ImageAwesome>
+                                        <TextBlock Text="В список"/>
+                                    </StackPanel>
+                                </Button>
+                            </StackPanel>
+                            <ListBox Width="150" 
+                                 ItemsSource="{Binding Recipients}"
+                                 SelectedItem="{Binding CurrentRecipient}">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Vertical">
+                                            <TextBlock Text="{Binding Name}"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </StackPanel>
+                    </GroupBox>
+                    <GroupBox Header="Получатели в списке">
+                        <StackPanel Orientation="Vertical">
+                            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                <Button 
+                                    Command="{Binding RemoveRecipientFromListCommand}"
+                                    CommandParameter="{Binding ListRecipient}"
+                                    Margin="5,0">
+                                    <StackPanel Orientation="Horizontal">
+                                        <fa:ImageAwesome Icon="UserTimes" Foreground="WhiteSmoke" Height="18" Margin="2,0,7,0">
+                                            <fa:ImageAwesome.Effect>
+                                                <DropShadowEffect ShadowDepth="3" BlurRadius="3" Color="LightGray"></DropShadowEffect>
+                                            </fa:ImageAwesome.Effect>
+                                        </fa:ImageAwesome>
+                                        <TextBlock Text="Удалить из списка"/>
+                                    </StackPanel>
+                                </Button>
+                                <Button 
+                                    Command="{Binding ClearRecipientsFromListCommand}"
+                                    CommandParameter="{Binding CurrentRecipientsList}"
+                                    Margin="5,0">
+                                    <StackPanel Orientation="Horizontal">
+                                        <fa:ImageAwesome Icon="Recycle" Foreground="WhiteSmoke" Height="18" Margin="2,0,7,0">
+                                            <fa:ImageAwesome.Effect>
+                                                <DropShadowEffect ShadowDepth="3" BlurRadius="3" Color="LightGray"></DropShadowEffect>
+                                            </fa:ImageAwesome.Effect>
+                                        </fa:ImageAwesome>
+                                        <TextBlock Text="Очистить список"/>
+                                    </StackPanel>
+                                </Button>
+                            </StackPanel>
+                            <StackPanel>
+                                <ListBox
+                                 ItemsSource="{Binding CurrentRecipientsList.Recipients, UpdateSourceTrigger=PropertyChanged}"
+                                 SelectedItem="{Binding ListRecipient}">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Vertical">
+                                                <TextBlock Text="{Binding Name}"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </StackPanel>
+                        </StackPanel>
+                    </GroupBox>
+                </DockPanel>
             </TabItem>
             <TabItem Header="Статистика" IsEnabled="True">
                 

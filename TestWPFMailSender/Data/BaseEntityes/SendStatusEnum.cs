@@ -13,6 +13,8 @@ namespace MailSender.Data.BaseEntityes
         [Description("Статус: Ошибка")]
         Error = 3,
         [Description("Статус: Частично отправлено")]
-        Partialy = 4
+        Partialy = 4,
+        [Description("Статус: Отмена")]
+        Canceled = 5
     }
 }

@@ -19,10 +19,10 @@ namespace MailSender.ViewModel
         #region MainWindowViewModel
         public MainWindowViewModel(
             IRecipientsDataService RecipientsDataService
-            ,ISendersDataService SendersDataService
-            ,IServersDataService MailServersDataService
-            ,IMessageDataService MailTemplatesDataService
-            ,IRecipientsListsDataService RecipientsListsDataService
+            , ISendersDataService SendersDataService
+            , IServersDataService MailServersDataService
+            , IMessageDataService MailTemplatesDataService
+            , IRecipientsListsDataService RecipientsListsDataService
             //,IMailSenderService MailSenderService
             )
         {
@@ -62,7 +62,10 @@ namespace MailSender.ViewModel
             UpdateRecipientsListsCommand = new RelayCommand(OnUpdateRecipientsListsCommandExecuted, CanUpdateRecipientsListsCommandExecuted);
             CreateRecipientsListsCommand = new RelayCommand(OnCreateRecipientsListsCommandExecuted, CanCreateRecipientsListsCommandExecuted);
             DeleteRecipientsListsCommand = new RelayCommand<RecipientsList>(OnDeleteRecipientsListsCommandExecuted, CanDeleteRecipientsListsCommandExecuted);
-
+            SaveRecipientsListsCommand = new RelayCommand<RecipientsList>(OnSaveRecipientsListsCommandExecuted, CanSaveRecipientsListsCommandExecuted);
+            AddRecipientToListCommand = new RelayCommand<Recipient>(OnAddRecipientToListCommandExecuted, CanAddRecipientToListCommandExecuted);
+            RemoveRecipientFromListCommand = new RelayCommand<Recipient>(OnRemoveRecipientFromListCommandExecuted, CanRemoveRecipientFromListCommandExecuted);
+            ClearRecipientsFromListCommand = new RelayCommand<RecipientsList>(OnClearRecipientsFromListCommandExecuted, CanClearRecipientsFromListCommandExecuted);
 
             //Отчеты
             CreateReportRecipientsCommand = new RelayCommand(OnCreateReportRecipientsCommand, CanCreateReportRecipientsCommand);
@@ -121,7 +124,7 @@ namespace MailSender.ViewModel
         #region Recipients
         private readonly IRecipientsDataService _RecipientsDataService;
         private ObservableCollection<Recipient> _Recipients;
-        
+
         public ObservableCollection<Recipient> Recipients
         {
             get => _Recipients;
@@ -200,14 +203,21 @@ namespace MailSender.ViewModel
         public ObservableCollection<RecipientsList> RecipientsLists
         {
             get => _RecipientsLists;
-            private set => Set(ref _RecipientsLists, value);
+            set => Set(ref _RecipientsLists, value);
         }
 
         private RecipientsList _CurrentRecipientsList;
         public RecipientsList CurrentRecipientsList
         {
             get => _CurrentRecipientsList;
-            private set => Set(ref _CurrentRecipientsList, value);
+            set => Set(ref _CurrentRecipientsList, value);
+        }
+
+        private Recipient _ListRecipient;
+        public Recipient ListRecipient
+        {
+            get => _ListRecipient;
+            set => Set(ref _ListRecipient, value);
         }
 
         public void GetRecipientsLists()
@@ -252,6 +262,57 @@ namespace MailSender.ViewModel
             _RecipientsListsDataService.Delete(item.id);
             GetRecipientsLists();
         }
+
+        public ICommand SaveRecipientsListsCommand { get; }
+
+        private bool CanSaveRecipientsListsCommandExecuted(RecipientsList item)
+        {
+            return item != null && item.Name.Length > 3;
+        }
+
+        private void OnSaveRecipientsListsCommandExecuted(RecipientsList item)
+        {
+            _RecipientsListsDataService.Edit(item.id, item);
+            GetRecipientsLists();
+        }
+
+        #region Work with CurrentRecipientsList
+        public ICommand AddRecipientToListCommand { get; }
+        private bool CanAddRecipientToListCommandExecuted(Recipient item)
+        {
+            return (item != null && CurrentRecipientsList != null);
+        }
+        private void OnAddRecipientToListCommandExecuted(Recipient item)
+        {
+            _RecipientsListsDataService.AddRecipientToList(CurrentRecipientsList.id, item);
+            CurrentRecipientsList =
+                _RecipientsListsDataService.GetById(CurrentRecipientsList.id);
+        }
+
+        public ICommand RemoveRecipientFromListCommand { get; }
+        private bool CanRemoveRecipientFromListCommandExecuted(Recipient item)
+        {
+            return (item != null && CurrentRecipientsList != null);
+        }
+        private void OnRemoveRecipientFromListCommandExecuted(Recipient item)
+        {
+            _RecipientsListsDataService.RemoveRecipientFromList(CurrentRecipientsList.id, item);
+            CurrentRecipientsList =
+                _RecipientsListsDataService.GetById(CurrentRecipientsList.id);
+        }
+
+        public ICommand ClearRecipientsFromListCommand { get; }
+        private bool CanClearRecipientsFromListCommandExecuted(RecipientsList item)
+        {
+            return (item != null);
+        }
+        private void OnClearRecipientsFromListCommandExecuted(RecipientsList item)
+        {
+            _RecipientsListsDataService.ClearRecipientsFromList(item.id);
+            CurrentRecipientsList =
+                _RecipientsListsDataService.GetById(CurrentRecipientsList.id);
+        }
+        #endregion
 
         #endregion
 

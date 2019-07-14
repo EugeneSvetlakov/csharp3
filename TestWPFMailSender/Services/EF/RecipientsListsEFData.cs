@@ -34,5 +34,41 @@ namespace MailSender.Services.EF
             await CommitAsync();
             return db_item;
         }
+
+        public void AddRecipientToList(int id, Recipient item)
+        {
+            if (item is null) throw new ArgumentNullException(nameof(item));
+
+            var CurrentRecipientsList = GetById(id);
+
+            if (CurrentRecipientsList is null) throw new ArgumentNullException(nameof(CurrentRecipientsList));
+            if (CurrentRecipientsList.Recipients.Contains(item)) return;
+
+            CurrentRecipientsList.Recipients.Add(item);
+
+        }
+
+        public void RemoveRecipientFromList(int id, Recipient item)
+        {
+            if (item is null) throw new ArgumentNullException(nameof(item));
+
+            var CurrentRecipientsList = GetById(id);
+
+            if (CurrentRecipientsList is null) throw new ArgumentNullException(nameof(CurrentRecipientsList));
+
+            if (CurrentRecipientsList.Recipients.Contains(item))
+            {
+                CurrentRecipientsList.Recipients.Remove(item);
+            }
+        }
+
+        public void ClearRecipientsFromList(int id)
+        {
+            var CurrentRecipientsList = GetById(id);
+
+            if (CurrentRecipientsList is null) throw new ArgumentNullException(nameof(CurrentRecipientsList));
+
+            CurrentRecipientsList.Recipients.Clear();
+        }
     }
 }

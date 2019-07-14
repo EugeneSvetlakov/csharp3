@@ -9,7 +9,7 @@ namespace MailSender.Data
 {
     public class MailTask : Entity
     {
-        public DateTime Time { get; set; }
+        public DateTime Time { get; set; } = DateTime.Now.AddHours(3);
 
         public virtual Message Message { get; set; }
 
