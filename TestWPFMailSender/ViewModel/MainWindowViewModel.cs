@@ -12,6 +12,7 @@ using GalaSoft.MvvmLight.CommandWpf;
 using System.ComponentModel;
 using System.IO;
 
+
 namespace MailSender.ViewModel
 {
     public class MainWindowViewModel : ViewModelBase
@@ -23,7 +24,8 @@ namespace MailSender.ViewModel
             , IServersDataService MailServersDataService
             , IMessageDataService MailTemplatesDataService
             , IRecipientsListsDataService RecipientsListsDataService
-            //,IMailSenderService MailSenderService
+            , IMailTasksDataService MailTasksDataService
+            , IMailTasksSender MailTasksSender
             )
         {
             _RecipientsDataService = RecipientsDataService;
@@ -54,7 +56,14 @@ namespace MailSender.ViewModel
             DeleteMailTemplateCommand = new RelayCommand<Message>(OnDeleteMailTemplateCommandExecuted, CanDeleteMailTemplateCommandExecuted);
             //GetMailTemplates();
 
-            //_MailSenderService = MailSenderService;
+            _MailTasksDataService = MailTasksDataService;
+            UpdateMailTasksCommand = new RelayCommand(OnUpdateMailTasksCommandExecuted, CanUpdateMailTasksCommandExecuted);
+            CreateMailTasksCommand = new RelayCommand(OnCreateMailTasksCommandExecuted, CanCreateMailTasksCommandExecuted);
+            DeleteMailTasksCommand = new RelayCommand<MailTask>(OnDeleteMailTasksCommandExecuted, CanDeleteMailTasksCommandExecuted);
+            SaveMailTasksCommand = new RelayCommand<MailTask>(OnSaveMailTasksCommandExecuted, CanSaveMailTasksCommandExecuted);
+
+            _MailTasksSender = MailTasksSender;
+            SendMailTaskNowCommand = new RelayCommand<MailTask>(OnSendMailTaskNowCommandExecuted, CanSendMailTaskNowCommandExecuted);
             //todo Commands for MailSenderService
 
             //RecipientsLists
@@ -119,6 +128,67 @@ namespace MailSender.ViewModel
             report.CreatePackage($"{Path}\\Report_{DateTime.Now.ToString("yyyyMMddHHmmssfff")}.docx");
         }
 
+        #endregion
+
+        #region MailTask
+        private readonly IMailTasksDataService _MailTasksDataService;
+
+        private ObservableCollection<MailTask> _MailTasks;
+        public ObservableCollection<MailTask> MailTasks
+        {
+            get => _MailTasks;
+            set => Set(ref _MailTasks, value);
+        }
+
+        private MailTask _CurrentMailTask;
+        public MailTask CurrentMailTask
+        {
+            get => _CurrentMailTask;
+            set => Set(ref _CurrentMailTask, value);
+        }
+
+        //GetAll()
+        private void GetMailTasks() => _MailTasksDataService.GetAll();
+
+        public ICommand UpdateMailTasksCommand { get; }
+        private bool CanUpdateMailTasksCommandExecuted() => true;
+        private void OnUpdateMailTasksCommandExecuted()
+        {
+            GetMailTasks();
+        }
+
+        public ICommand CreateMailTasksCommand { get; }
+        private bool CanCreateMailTasksCommandExecuted() => true;
+        private void OnCreateMailTasksCommandExecuted()
+        {
+            throw new NotImplementedException();
+        }
+
+        public ICommand DeleteMailTasksCommand { get; }
+        private bool CanDeleteMailTasksCommandExecuted(MailTask item) => !(item is null);
+        private void OnDeleteMailTasksCommandExecuted(MailTask item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ICommand SaveMailTasksCommand { get; }
+        private bool CanSaveMailTasksCommandExecuted(MailTask item) => !(item is null);
+        private void OnSaveMailTasksCommandExecuted(MailTask item)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region MailTasksSender
+        private readonly IMailTasksSender _MailTasksSender;
+
+        public ICommand SendMailTaskNowCommand { get; }
+        private bool CanSendMailTaskNowCommandExecuted(MailTask item) => !(item is null);
+        private void OnSendMailTaskNowCommandExecuted(MailTask item)
+        {
+            throw new NotImplementedException();
+        }
         #endregion
 
         #region Recipients
@@ -531,6 +601,8 @@ namespace MailSender.ViewModel
         }
 
         public ICommand DeleteMailServerCommand { get; }
+
+        public IMailTasksSender MailTasksSender => mailTasksSender;
 
         private bool CanDeleteMailServerCommandExecuted(Server item)
         {

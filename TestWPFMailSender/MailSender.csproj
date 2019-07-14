@@ -161,6 +161,7 @@
     <Compile Include="Data\MailTask.cs" />
     <Compile Include="Reports\Report.cs" />
     <Compile Include="Services\EF\EFData.cs" />
+    <Compile Include="Services\EF\MailTasksSender.cs" />
     <Compile Include="Services\EF\MessagesEFData.cs" />
     <Compile Include="Services\EF\RecipientsEFData.cs" />
     <Compile Include="Services\EF\RecipientsListsEFData.cs" />
@@ -168,8 +169,8 @@
     <Compile Include="Services\EF\SendersEFData.cs" />
     <Compile Include="Services\EF\ServersEFData.cs" />
     <Compile Include="Services\IDataService.cs" />
+    <Compile Include="Services\IMailTasksSender.cs" />
     <Compile Include="Services\IMessageDataService.cs" />
-    <Compile Include="Services\IMailSenderService.cs" />
     <Compile Include="Services\InMemory\DataInMemory.cs" />
     <Compile Include="Services\InMemory\MessagesDataInMemory.cs" />
     <Compile Include="Services\InMemory\SendersDataInMemory.cs" />
@@ -184,7 +185,6 @@
     <Compile Include="Services\Linq2Sql\MailServersDataServicesLinq2Sql.cs" />
     <Compile Include="Services\Linq2Sql\SendersDataServicesLinq2Sql.cs" />
     <Compile Include="Services\Linq2Sql\RecipientsDataServicesLinq2Sql.cs" />
-    <Compile Include="Services\MailSenderService.cs" />
     <Compile Include="ValidationRules\NameValidationRules.cs" />
     <Compile Include="ValidationRules\RegExValidationRule.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
