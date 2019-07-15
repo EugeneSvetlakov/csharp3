@@ -138,7 +138,7 @@
                 <DockPanel>
                     <DockPanel Width="150">
                         <GroupBox Header="Дата и время" DockPanel.Dock="Top">
-                            <xctk:DateTimePicker></xctk:DateTimePicker>
+                            <xctk:DateTimePicker Value="{Binding CurrentMailTask.Time, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></xctk:DateTimePicker>
                         </GroupBox>
                         <StackPanel DockPanel.Dock="Bottom">
                             <Button>Запланировать</Button>
@@ -162,21 +162,22 @@
                     </DockPanel>
                     <DockPanel>
                         <GroupBox Header="Необработанные задания" DockPanel.Dock="Top">
-                            <DataGrid AutoGenerateColumns="False">
+                            <DataGrid ItemsSource="{Binding CurrentMailTask}" AutoGenerateColumns="False">
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn Header="ID"></DataGridTextColumn>
-                                    <DataGridTextColumn Header="Отправитель"></DataGridTextColumn>
-                                    <DataGridTextColumn Header="Сервер"></DataGridTextColumn>
-                                    <DataGridTextColumn Header="Количество получателей"></DataGridTextColumn>
+                                    <DataGridTextColumn Binding="{Binding id}" Header="ID"></DataGridTextColumn>
+                                    <DataGridTextColumn Binding="{Binding Sender}" Header="Отправитель"></DataGridTextColumn>
+                                    <DataGridTextColumn Binding="{Binding Server}" Header="Сервер"></DataGridTextColumn>
+                                    <DataGridTextColumn Binding="{Binding Time}" Header="Назначенное время"></DataGridTextColumn>
+                                    <DataGridTextColumn Binding="{Binding SendStatusEnum}" Header="Статус"></DataGridTextColumn>
                                 </DataGrid.Columns>
                             </DataGrid>
                         </GroupBox>
                         <GroupBox Header="Список получателей" DockPanel.Dock="Bottom">
-                            <DataGrid AutoGenerateColumns="False">
+                            <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding CurrentMailTask.RecipientsList}">
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn Header="ID"></DataGridTextColumn>
-                                    <DataGridTextColumn Header="Имя"></DataGridTextColumn>
-                                    <DataGridTextColumn Header="Email"></DataGridTextColumn>
+                                    <DataGridTextColumn Binding="{Binding id}" Header="ID"></DataGridTextColumn>
+                                    <DataGridTextColumn Binding="{Binding Name}" Header="Имя"></DataGridTextColumn>
+                                    <DataGridTextColumn Binding="{Binding Address}" Header="Email"></DataGridTextColumn>
                                 </DataGrid.Columns>
                             </DataGrid>
                         </GroupBox>
