@@ -54,8 +54,9 @@ namespace MailSender.ViewModel
             services.Register<ISendersDataService, SendersEFData>();
             services.Register<IServersDataService, ServersEFData>();
             services.Register<IMessageDataService, MessagesEFData>();
-            services.Register<IRecipientsListsDataService, RecipientsListsEFData>(); 
-            //services.Register<ISendTasksDataService, SendTasksEFData>(); 
+            services.Register<IRecipientsListsDataService, RecipientsListsEFData>();
+            services.Register<IMailTasksDataService, MailTasksEFData>(); 
+            //services.Register<IMailTasksSender, MailTasksSender>();
             #endregion
 
             #region InMemory

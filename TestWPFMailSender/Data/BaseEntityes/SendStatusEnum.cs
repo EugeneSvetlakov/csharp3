@@ -15,6 +15,8 @@ namespace MailSender.Data.BaseEntityes
         [Description("Статус: Частично отправлено")]
         Partialy = 4,
         [Description("Статус: Отмена")]
-        Canceled = 5
+        Canceled = 5,
+        [Description("Статус: Запланирована")]
+        Scheduled = 6
     }
 }

@@ -8,7 +8,7 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:local="clr-namespace:MailSender"
         xmlns:vr="clr-namespace:MailSender.ValidationRules"
-        xmlns:data="clr-namespace:System.Data.SqlClient;assembly=System.Data"
+        xmlns:data="clr-namespace:MailSender.Data"
         xmlns:view="clr-namespace:MailSender.View"
         mc:Ignorable="d"
         Title="{Binding Title}" Height="540" MinHeight="400" MinWidth="800"
@@ -20,6 +20,7 @@
             <i:InvokeCommandAction Command="{Binding UpdateSendersCommand}"/>
             <i:InvokeCommandAction Command="{Binding GetRecipientsDataCommand}"/>
             <i:InvokeCommandAction Command="{Binding UpdateRecipientsListsCommand}"/>
+            <i:InvokeCommandAction Command="{Binding UpdateMailTasksCommand}"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
     <DockPanel>
@@ -29,7 +30,7 @@
                 <MenuItem Header="Сохранить" IsEnabled="False"></MenuItem>
                 <MenuItem Header="Выход"></MenuItem>
             </MenuItem>
-            <MenuItem Header="Настройки" IsEnabled="False"></MenuItem>
+            <MenuItem Header="Настройки" Visibility="Collapsed" IsEnabled="False"></MenuItem>
         </Menu>
         <StatusBar DockPanel.Dock="Bottom">
             <TextBlock Text="{Binding Status}"/>
@@ -80,7 +81,7 @@
                                 </view:ListControler.ItemTemplate>
                             </view:ListControler>
                         </ToolBar>
-                        <ToolBar Band="1" VerticalAlignment="Center">
+                        <ToolBar Visibility="Collapsed" Band="1" VerticalAlignment="Center">
                             <view:ListControler PanelName="[Список]" 
                                                 ItemSource="{Binding RecipientsLists, UpdateSourceTrigger=PropertyChanged}"
                                                 SelectedItem="{Binding CurrentRecipientsList}"
@@ -93,9 +94,22 @@
                                 </view:ListControler.ItemTemplate>
                             </view:ListControler>
                         </ToolBar>
+                        <ToolBar Band="1">
+                            <DockPanel>
+                                <TextBlock Margin="7,0" VerticalAlignment="Center" Text="СписокР:"/>
+                                <ComboBox Width="120" ItemsSource="{Binding RecipientsLists}"
+                                          SelectedItem="{Binding CurrentRecipientsList}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate DataType="data:RecipientsList">
+                                            <TextBlock Text="{Binding Name}"/>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </DockPanel>
+                        </ToolBar>
                     </ToolBarTray>
                     <StackPanel DockPanel.Dock="Bottom" >
-                        <Button>Создать задание</Button>
+                        <Button Command="{Binding CreateMailTasksCommand}">Создать задание</Button>
                     </StackPanel>
                     <StackPanel>
                         <StackPanel 
@@ -131,12 +145,14 @@
                             <Button>Сейчас</Button>
                         </StackPanel>
                         <GroupBox Header="Письмо">
-                            <ListBox ItemsSource="{Binding MailTemplates}"
-                                     SelectedItem="{Binding CurrentMailTemplate}">
+                            <ListBox ItemsSource="{Binding MailTasks}"
+                                     SelectedItem="{Binding CurrentMailTask}">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Vertical">
-                                            <TextBlock Text="{Binding subject}"/>
+                                            <TextBlock Text="{Binding id}"/>
+                                            <TextBlock Text="{Binding SendStatusEnum}"/>
+                                            <TextBlock Text="{Binding Time}"/>
                                         </StackPanel>
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>
@@ -599,7 +615,7 @@
                     </GroupBox>
                 </DockPanel>
             </TabItem>
-            <TabItem Header="Статистика" IsEnabled="True">
+            <TabItem Header="Статистика" Visibility="Collapsed" IsEnabled="True">
                 
             </TabItem>
             <TabItem Header="Отчеты" IsEnabled="True">

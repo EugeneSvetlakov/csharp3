@@ -12,7 +12,8 @@
              DataContext="{Binding MainWindowViewModel, Source={StaticResource Locator}}">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
-            <i:InvokeCommandAction Command="{Binding CanSaveRecipientCommandExecuted}"/>
+            <i:InvokeCommandAction Command="{Binding SaveRecipientCommand}"/>
+            <i:InvokeCommandAction Command="{Binding SaveRecipientCommand}"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
     <DockPanel>
@@ -73,7 +74,7 @@
                             Command="{Binding SaveRecipientCommand}"
                             CommandParameter="{Binding CurrentRecipient}"
                             />
-                    <Button Content="Отменить все изменения" Command="{Binding UpdateDataCommand}"/>
+                    <Button Content="Отменить все изменения" Command="{Binding GetRecipientsDataCommand}"/>
                 </StackPanel>
             </DockPanel>
         </DockPanel>

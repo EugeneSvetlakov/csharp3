@@ -19,7 +19,7 @@
         <DockPanel Visibility="Collapsed" DockPanel.Dock="Top" Margin="5,0,5,3">
             <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center" Text="Фильтр имени:" Margin="0,0,5,0"/>
             <Button DockPanel.Dock="Right" Content="Обновить"  Margin="2,2" 
-                    Command="{Binding UpdateDataCommand}"/>
+                    Command="{Binding GetRecipientsDataCommand}"/>
             <TextBox/>
         </DockPanel>
         <DockPanel>

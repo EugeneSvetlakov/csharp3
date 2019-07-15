@@ -15,7 +15,7 @@ namespace MailSender.Services.EF
 
             var db_item = GetById(id);
             if (db_item is null) return null;
-            db_item.Time = item.Time;
+            db_item.Time = item.Time; 
             db_item.Message = item.Message;
             db_item.Sender = item.Sender;
             db_item.RecipientsList = item.RecipientsList;

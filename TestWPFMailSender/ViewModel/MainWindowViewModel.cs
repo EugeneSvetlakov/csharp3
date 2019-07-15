@@ -25,7 +25,7 @@ namespace MailSender.ViewModel
             , IMessageDataService MailTemplatesDataService
             , IRecipientsListsDataService RecipientsListsDataService
             , IMailTasksDataService MailTasksDataService
-            , IMailTasksSender MailTasksSender
+            //, IMailTasksSender MailTasksSender
             )
         {
             _RecipientsDataService = RecipientsDataService;
@@ -62,8 +62,8 @@ namespace MailSender.ViewModel
             DeleteMailTasksCommand = new RelayCommand<MailTask>(OnDeleteMailTasksCommandExecuted, CanDeleteMailTasksCommandExecuted);
             SaveMailTasksCommand = new RelayCommand<MailTask>(OnSaveMailTasksCommandExecuted, CanSaveMailTasksCommandExecuted);
 
-            _MailTasksSender = MailTasksSender;
-            SendMailTaskNowCommand = new RelayCommand<MailTask>(OnSendMailTaskNowCommandExecuted, CanSendMailTaskNowCommandExecuted);
+            //_MailTasksSender = MailTasksSender;
+            //SendMailTaskNowCommand = new RelayCommand<MailTask>(OnSendMailTaskNowCommandExecuted, CanSendMailTaskNowCommandExecuted);
             //todo Commands for MailSenderService
 
             //RecipientsLists
@@ -148,7 +148,10 @@ namespace MailSender.ViewModel
         }
 
         //GetAll()
-        private void GetMailTasks() => _MailTasksDataService.GetAll();
+        private void GetMailTasks()
+        {
+            MailTasks = new ObservableCollection<MailTask>(_MailTasksDataService.GetAll());
+        }
 
         public ICommand UpdateMailTasksCommand { get; }
         private bool CanUpdateMailTasksCommandExecuted() => true;
@@ -158,37 +161,61 @@ namespace MailSender.ViewModel
         }
 
         public ICommand CreateMailTasksCommand { get; }
-        private bool CanCreateMailTasksCommandExecuted() => true;
+        private bool CanCreateMailTasksCommandExecuted()
+        {
+            bool check_data = !(CurrentMailServer is null)
+                && !(CurrentSender is null)
+                && !(CurrentRecipientsList is null)
+                && !(CurrentMailTemplate is null);
+            return check_data;
+        }
         private void OnCreateMailTasksCommandExecuted()
         {
-            throw new NotImplementedException();
+            if (CurrentMailServer is null) throw new ArgumentNullException(nameof(CurrentMailServer));
+            if (CurrentSender is null) throw new ArgumentNullException(nameof(CurrentSender));
+            if (CurrentRecipientsList is null) throw new ArgumentNullException(nameof(CurrentRecipientsList));
+            if (CurrentMailTemplate is null) throw new ArgumentNullException(nameof(CurrentMailTemplate));
+            var new_MailTasks = new MailTask()
+            {
+                Message = CurrentMailTemplate,
+                Sender = CurrentSender,
+                Server = CurrentMailServer,
+                RecipientsList = CurrentRecipientsList
+            };
+            _MailTasksDataService.Add(new_MailTasks);
+            GetMailTasks();
+            _CurrentMailTask = new_MailTasks;
         }
 
         public ICommand DeleteMailTasksCommand { get; }
         private bool CanDeleteMailTasksCommandExecuted(MailTask item) => !(item is null);
         private void OnDeleteMailTasksCommandExecuted(MailTask item)
         {
-            throw new NotImplementedException();
+            if (item is null) throw new ArgumentNullException(nameof(item));
+
+            _MailTasksDataService.Delete(item.id);
         }
 
         public ICommand SaveMailTasksCommand { get; }
         private bool CanSaveMailTasksCommandExecuted(MailTask item) => !(item is null);
         private void OnSaveMailTasksCommandExecuted(MailTask item)
         {
-            throw new NotImplementedException();
+            if (item is null) throw new ArgumentNullException(nameof(item));
+
+            _MailTasksDataService.Edit(item.id, item);
         }
 
         #endregion
 
         #region MailTasksSender
-        private readonly IMailTasksSender _MailTasksSender;
+        //private readonly IMailTasksSender _MailTasksSender;
 
-        public ICommand SendMailTaskNowCommand { get; }
-        private bool CanSendMailTaskNowCommandExecuted(MailTask item) => !(item is null);
-        private void OnSendMailTaskNowCommandExecuted(MailTask item)
-        {
-            throw new NotImplementedException();
-        }
+        //public ICommand SendMailTaskNowCommand { get; }
+        //private bool CanSendMailTaskNowCommandExecuted(MailTask item) => !(item is null);
+        //private void OnSendMailTaskNowCommandExecuted(MailTask item)
+        //{
+        //    throw new NotImplementedException();
+        //}
         #endregion
 
         #region Recipients
@@ -602,7 +629,7 @@ namespace MailSender.ViewModel
 
         public ICommand DeleteMailServerCommand { get; }
 
-        public IMailTasksSender MailTasksSender => mailTasksSender;
+        
 
         private bool CanDeleteMailServerCommandExecuted(Server item)
         {
