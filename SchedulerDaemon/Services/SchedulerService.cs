@@ -1,0 +1,43 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Threading;
+
+namespace SchedulerDaemon.Services
+{
+    public class SchedulerService
+    {
+        private static SchedulerService _instance;
+        private List<Timer> timers = new List<Timer>();
+
+        private SchedulerService() { }
+
+        public static SchedulerService Instance => _instance ?? (_instance = new SchedulerService());
+
+        public void ScheduleTask(double intervalInMinits, Action task)
+        {
+            //DateTime now = DateTime.Now;
+            //DateTime firstRun = new DateTime(now.Year, now.Month, now.Day, hour, min, 0, 0);
+            //if (now > firstRun)
+            //{
+            //    firstRun = firstRun.AddDays(1);
+            //}
+
+            //TimeSpan timeToGo = firstRun - now;
+            TimeSpan timeToGo = TimeSpan.Zero;
+            //if (timeToGo <= TimeSpan.Zero)
+            //{
+            //    timeToGo = TimeSpan.Zero;
+            //}
+
+            var timer = new Timer(x =>
+            {
+                task.Invoke();
+            }, null, timeToGo, TimeSpan.FromMinutes(intervalInMinits));
+
+            timers.Add(timer);
+        }
+    }
+}

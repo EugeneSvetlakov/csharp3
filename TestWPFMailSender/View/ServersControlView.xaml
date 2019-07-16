@@ -1,0 +1,50 @@
+﻿<UserControl x:Class="MailSender.View.ServersControlView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:view="clr-namespace:MailSender.View"
+             xmlns:data="clr-namespace:MailSender.Data"
+             mc:Ignorable="d" 
+             d:DesignHeight="430" d:DesignWidth="750">
+    <DockPanel>
+        <ToolBarTray DockPanel.Dock="Top">
+            <ToolBar VerticalAlignment="Center">
+                <view:ListControler PanelName="[Сервер]" 
+                                                ItemSource="{Binding MailServers, UpdateSourceTrigger=PropertyChanged}"
+                                                SelectedIndex="0"
+                                                SelectedItem="{Binding CurrentMailServer}"
+                                                CreateCommand="{Binding CreateMailServersCommand}"
+                                                DeleteCommand="{Binding DeleteMailServerCommand}">
+                    <view:ListControler.ItemTemplate>
+                        <DataTemplate DataType="data:Server">
+                            <TextBlock Text="{Binding Name}"/>
+                        </DataTemplate>
+                    </view:ListControler.ItemTemplate>
+                </view:ListControler>
+            </ToolBar>
+        </ToolBarTray>
+        <WrapPanel>
+            <StackPanel MinWidth="200" MaxWidth="300" Margin="15,15,0,0" Orientation="Horizontal" >
+                <TextBlock Margin="7,0,7,0" VerticalAlignment="Center" Text="[название поля]"/>
+                <TextBox MinWidth="150" MaxWidth="230"/>
+            </StackPanel>
+            <StackPanel MinWidth="200" MaxWidth="300" Margin="15,15,0,0" Orientation="Horizontal" >
+                <TextBlock Margin="7,0,7,0" VerticalAlignment="Center" Text="[название поля]"/>
+                <TextBox MinWidth="150" MaxWidth="230"/>
+            </StackPanel>
+            <StackPanel MinWidth="200" MaxWidth="300" Margin="15,15,0,0" Orientation="Horizontal" >
+                <TextBlock Margin="7,0,7,0" VerticalAlignment="Center" Text="[название поля]"/>
+                <TextBox MinWidth="150" MaxWidth="230"/>
+            </StackPanel>
+            <StackPanel MinWidth="200" MaxWidth="300" Margin="15,15,0,0" Orientation="Horizontal" >
+                <TextBlock Margin="7,0,7,0" VerticalAlignment="Center" Text="[название поля]"/>
+                <TextBox MinWidth="150" MaxWidth="230"/>
+            </StackPanel>
+            <StackPanel MinWidth="200" MaxWidth="300" Margin="15,15,0,0" Orientation="Horizontal" >
+                <TextBlock Margin="7,0,7,0" VerticalAlignment="Center" Text="[название поля]"/>
+                <TextBox MinWidth="150" MaxWidth="230"/>
+            </StackPanel>
+        </WrapPanel>
+    </DockPanel>
+</UserControl>

@@ -1,0 +1,46 @@
+5. *Существует таблица (см. методичку к уроку, раздел ДЗ). Необходимо сформировать SQL-запрос, выбирающий данные (см. методичку к уроку, раздел ДЗ).
+
+======
+
+--Смоделируем данные:
+DECLARE @tab1 Table (id int, group_id int, descr nvarchar(50))
+insert into @tab1 VALUES(1,1,'Один')
+insert into @tab1 VALUES(2,2,'Два')
+insert into @tab1 VALUES(3,1,'Три')
+insert into @tab1 VALUES(4,2,'Четыре')
+insert into @tab1 VALUES(5,2,'Пять')
+
+--Решение 1
+DECLARE @MaxId int, @ii int;
+set @MaxId = (select max(id) from @tab1);
+set @ii = (select min(id) from @tab1);
+
+DECLARE @tab2 Table (group_id int, descr nvarchar(250) NULL);
+insert into @tab2(group_id) select distinct group_id from @tab1;
+while @ii <= @MaxId
+	BEGIN
+		UPDATE t SET t.[descr] = IIF(t.[descr] is null,'',t.[descr] + ',')  + isnull(s.[descr],'')
+		from @tab2 t, @tab1 s
+		where s.id = @ii and t.group_id=s.group_id
+		set @ii = @ii + 1
+	END;
+select * from @tab2;
+
+-- Решение 2 (для MS SQL)
+SELECT Result.group_id,
+       LEFT(Result.descr,Len(Result.descr)-1) As "descr"
+FROM
+    (
+        SELECT DISTINCT T2.group_id, 
+            (
+                SELECT T1.descr + ',' AS [text()]
+                FROM @tab1 T1
+                WHERE T1.group_id = T2.group_id
+                ORDER BY T1.group_id
+                FOR XML PATH ('')
+            ) [descr]
+        FROM @tab1 T2
+    ) [Result]
+
+--Решение 3 (для ms sql начиная с версии 2017)
+select group_id,STRING_AGG(descr,',') as resul from @tab1
