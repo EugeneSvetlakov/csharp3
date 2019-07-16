@@ -161,7 +161,6 @@
     <Compile Include="Data\MailTask.cs" />
     <Compile Include="Reports\Report.cs" />
     <Compile Include="Services\EF\EFData.cs" />
-    <Compile Include="Services\EF\MailTasksSender.cs" />
     <Compile Include="Services\EF\MessagesEFData.cs" />
     <Compile Include="Services\EF\RecipientsEFData.cs" />
     <Compile Include="Services\EF\RecipientsListsEFData.cs" />
@@ -169,7 +168,6 @@
     <Compile Include="Services\EF\SendersEFData.cs" />
     <Compile Include="Services\EF\ServersEFData.cs" />
     <Compile Include="Services\IDataService.cs" />
-    <Compile Include="Services\IMailTasksSender.cs" />
     <Compile Include="Services\IMessageDataService.cs" />
     <Compile Include="Services\InMemory\DataInMemory.cs" />
     <Compile Include="Services\InMemory\MessagesDataInMemory.cs" />

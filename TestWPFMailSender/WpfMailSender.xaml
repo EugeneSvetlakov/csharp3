@@ -39,64 +39,48 @@
             <TabItem Header="Создать задание">
                 <DockPanel>
                     <ToolBarTray DockPanel.Dock="Top">
-                        <ToolBar VerticalAlignment="Center">
-                            <view:ListControler PanelName="[Сервер]" 
-                                                ItemSource="{Binding MailServers, UpdateSourceTrigger=PropertyChanged}"
-                                                SelectedIndex="-1"
-                                                SelectedItem="{Binding CurrentMailServer}"
-                                                CreateCommand="{Binding CreateMailServersCommand}"
-                                                DeleteCommand="{Binding DeleteMailServerCommand}">
-                                <view:ListControler.ItemTemplate>
-                                    <DataTemplate DataType="data:Server">
-                                        <TextBlock Text="{Binding Name}"/>
-                                    </DataTemplate>
-                                </view:ListControler.ItemTemplate>
-                            </view:ListControler>
+                        <ToolBar Band="0">
+                            <DockPanel>
+                                <TextBlock Margin="7,0" VerticalAlignment="Center" Text="Сервер:"/>
+                                <ComboBox Width="120" ItemsSource="{Binding MailServers, UpdateSourceTrigger=PropertyChanged}"
+                                          SelectedItem="{Binding CurrentMailServer}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate DataType="data:Server">
+                                            <TextBlock Text="{Binding Name}"/>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </DockPanel>
                         </ToolBar>
-                        <ToolBar VerticalAlignment="Center">
-                            <view:ListControler PanelName="[Отправитель]" 
-                                                ItemSource="{Binding Senders, UpdateSourceTrigger=PropertyChanged}"
-                                                SelectedIndex="-1"
-                                                SelectedItem="{Binding CurrentSender}"
-                                                CreateCommand="{Binding CreateSenderCommand}"
-                                                DeleteCommand="{Binding DeleteSenderCommand}">
-                                <view:ListControler.ItemTemplate>
-                                    <DataTemplate DataType="data:Sender">
-                                        <TextBlock Text="{Binding Name}"/>
-                                    </DataTemplate>
-                                </view:ListControler.ItemTemplate>
-                            </view:ListControler>
-                        </ToolBar>
-                        <ToolBar Band="1" VerticalAlignment="Center">
-                            <view:ListControler PanelName="[Письмо]" 
-                                                ItemSource="{Binding MailTemplates, UpdateSourceTrigger=PropertyChanged}"
-                                                SelectedIndex="-1"
-                                                SelectedItem="{Binding CurrentMailTemplate}"
-                                                CreateCommand="{Binding CreateMailTemplateCommand}"
-                                                DeleteCommand="{Binding DeleteMailTemplateCommand}">
-                                <view:ListControler.ItemTemplate>
-                                    <DataTemplate DataType="data:Message">
-                                        <TextBlock Text="{Binding id}"/>
-                                    </DataTemplate>
-                                </view:ListControler.ItemTemplate>
-                            </view:ListControler>
-                        </ToolBar>
-                        <ToolBar Visibility="Collapsed" Band="1" VerticalAlignment="Center">
-                            <view:ListControler PanelName="[Список]" 
-                                                ItemSource="{Binding RecipientsLists, UpdateSourceTrigger=PropertyChanged}"
-                                                SelectedItem="{Binding CurrentRecipientsList}"
-                                                CreateCommand="{Binding CreateRecipientsListsCommand}"
-                                                DeleteCommand="{Binding DeleteRecipientsListsCommand}">
-                                <view:ListControler.ItemTemplate>
-                                    <DataTemplate DataType="data:RecipientsList">
-                                        <TextBlock Text="{Binding Name}"/>
-                                    </DataTemplate>
-                                </view:ListControler.ItemTemplate>
-                            </view:ListControler>
+                        <ToolBar Band="0">
+                            <DockPanel>
+                                <TextBlock Margin="7,0" VerticalAlignment="Center" Text="Отправитель:"/>
+                                <ComboBox Width="120" ItemsSource="{Binding Senders, UpdateSourceTrigger=PropertyChanged}"
+                                          SelectedItem="{Binding CurrentSender}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate DataType="data:Sender">
+                                            <TextBlock Text="{Binding Name}"/>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </DockPanel>
                         </ToolBar>
                         <ToolBar Band="1">
                             <DockPanel>
-                                <TextBlock Margin="7,0" VerticalAlignment="Center" Text="СписокР:"/>
+                                <TextBlock Margin="7,0" VerticalAlignment="Center" Text="Письмо:"/>
+                                <ComboBox Width="120" ItemsSource="{Binding MailTemplates, UpdateSourceTrigger=PropertyChanged}"
+                                          SelectedItem="{Binding CurrentMailTemplate}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate DataType="data:Message">
+                                            <TextBlock Text="{Binding Subject}"/>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </DockPanel>
+                        </ToolBar>
+                        <ToolBar Band="1">
+                            <DockPanel>
+                                <TextBlock Margin="7,0" VerticalAlignment="Center" Text="СписокРасылки:"/>
                                 <ComboBox Width="120" ItemsSource="{Binding RecipientsLists}"
                                           SelectedItem="{Binding CurrentRecipientsList}">
                                     <ComboBox.ItemTemplate>
@@ -136,17 +120,30 @@
             </TabItem>
             <TabItem Header="Планировщик">
                 <DockPanel>
-                    <DockPanel Width="150">
-                        <GroupBox Header="Дата и время" DockPanel.Dock="Top">
-                            <xctk:DateTimePicker Value="{Binding CurrentMailTask.Time, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></xctk:DateTimePicker>
+                    <DockPanel Width="220">
+                        <GroupBox Header="Дата" DockPanel.Dock="Top">
+                            <xctk:DateTimeUpDown 
+                                Format="ShortDate" 
+                                Value="{Binding ScheduleDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            </xctk:DateTimeUpDown>
+                        </GroupBox>
+                        <GroupBox Header="Время" DockPanel.Dock="Top">
+                            <xctk:DateTimeUpDown 
+                                Format="ShortTime" 
+                                Value="{Binding ScheduleTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            </xctk:DateTimeUpDown>
                         </GroupBox>
                         <StackPanel DockPanel.Dock="Bottom">
-                            <Button>Запланировать</Button>
-                            <Button>Сейчас</Button>
+                            <Button Command="{Binding ScheduleMailTasksCommand}"
+                                    CommandParameter="{Binding CurrentMailTask}">Запланировать</Button>
+                            <Button Command="{Binding SendMailTaskNowCommand}"
+                                    CommandParameter="{Binding CurrentMailTask}">Отправить сейчас</Button>
+                            <Button Command="{Binding CancelMailTaskCommand}"
+                                    CommandParameter="{Binding CurrentMailTask}">Отменить</Button>
                         </StackPanel>
-                        <GroupBox Header="Письмо">
-                            <ListBox ItemsSource="{Binding MailTasks}"
-                                     SelectedItem="{Binding CurrentMailTask}">
+                        <GroupBox Header="Задача">
+                            <ListBox ItemsSource="{Binding MailTasks,UpdateSourceTrigger=PropertyChanged}"
+                                     SelectedItem="{Binding CurrentMailTask,UpdateSourceTrigger=PropertyChanged}">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Vertical">
@@ -161,23 +158,24 @@
                         
                     </DockPanel>
                     <DockPanel>
-                        <GroupBox Header="Необработанные задания" DockPanel.Dock="Top">
-                            <DataGrid ItemsSource="{Binding CurrentMailTask}" AutoGenerateColumns="False">
-                                <DataGrid.Columns>
-                                    <DataGridTextColumn Binding="{Binding id}" Header="ID"></DataGridTextColumn>
-                                    <DataGridTextColumn Binding="{Binding Sender}" Header="Отправитель"></DataGridTextColumn>
-                                    <DataGridTextColumn Binding="{Binding Server}" Header="Сервер"></DataGridTextColumn>
-                                    <DataGridTextColumn Binding="{Binding Time}" Header="Назначенное время"></DataGridTextColumn>
-                                    <DataGridTextColumn Binding="{Binding SendStatusEnum}" Header="Статус"></DataGridTextColumn>
-                                </DataGrid.Columns>
-                            </DataGrid>
+                        <GroupBox Header="Параметры задания" DockPanel.Dock="Top">
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel Margin="10,0" Orientation="Horizontal">
+                                    <TextBlock Foreground="Purple" Text="Sender.Address: "/>
+                                    <TextBlock Margin="7,0,0,0" Text="{Binding CurrentMailTask.Sender.Address}"/>
+                                </StackPanel>
+                                <StackPanel Margin="10,0" Orientation="Horizontal">
+                                    <TextBlock Foreground="Purple" Text="Server.Address: "/>
+                                    <TextBlock Margin="7,0,0,0" Text="{Binding CurrentMailTask.Server.Address}"/>
+                                </StackPanel>
+                            </StackPanel>
                         </GroupBox>
                         <GroupBox Header="Список получателей" DockPanel.Dock="Bottom">
-                            <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding CurrentMailTask.RecipientsList}">
+                            <DataGrid IsReadOnly="True" AutoGenerateColumns="False" ItemsSource="{Binding CurrentMailTask.RecipientsList.Recipients, UpdateSourceTrigger=PropertyChanged}">
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn Binding="{Binding id}" Header="ID"></DataGridTextColumn>
-                                    <DataGridTextColumn Binding="{Binding Name}" Header="Имя"></DataGridTextColumn>
-                                    <DataGridTextColumn Binding="{Binding Address}" Header="Email"></DataGridTextColumn>
+                                    <DataGridTextColumn Binding="{Binding id, UpdateSourceTrigger=PropertyChanged}" Header="ID"></DataGridTextColumn>
+                                    <DataGridTextColumn Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Header="Имя"></DataGridTextColumn>
+                                    <DataGridTextColumn Binding="{Binding Address, UpdateSourceTrigger=PropertyChanged}" Header="Email"></DataGridTextColumn>
                                 </DataGrid.Columns>
                             </DataGrid>
                         </GroupBox>

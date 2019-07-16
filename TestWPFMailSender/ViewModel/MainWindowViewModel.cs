@@ -11,7 +11,7 @@ using System.Windows.Input;
 using GalaSoft.MvvmLight.CommandWpf;
 using System.ComponentModel;
 using System.IO;
-
+using MailSender.Data.BaseEntityes;
 
 namespace MailSender.ViewModel
 {
@@ -25,7 +25,7 @@ namespace MailSender.ViewModel
             , IMessageDataService MailTemplatesDataService
             , IRecipientsListsDataService RecipientsListsDataService
             , IMailTasksDataService MailTasksDataService
-            //, IMailTasksSender MailTasksSender
+            //, IMailTasksSender MailTasksSenderService
             )
         {
             _RecipientsDataService = RecipientsDataService;
@@ -61,10 +61,9 @@ namespace MailSender.ViewModel
             CreateMailTasksCommand = new RelayCommand(OnCreateMailTasksCommandExecuted, CanCreateMailTasksCommandExecuted);
             DeleteMailTasksCommand = new RelayCommand<MailTask>(OnDeleteMailTasksCommandExecuted, CanDeleteMailTasksCommandExecuted);
             SaveMailTasksCommand = new RelayCommand<MailTask>(OnSaveMailTasksCommandExecuted, CanSaveMailTasksCommandExecuted);
-
-            //_MailTasksSender = MailTasksSender;
-            //SendMailTaskNowCommand = new RelayCommand<MailTask>(OnSendMailTaskNowCommandExecuted, CanSendMailTaskNowCommandExecuted);
-            //todo Commands for MailSenderService
+            ScheduleMailTasksCommand = new RelayCommand<MailTask>(OnScheduleMailTasksCommandExecuted, CanScheduleMailTasksCommandExecuted);
+            SendMailTaskNowCommand = new RelayCommand<MailTask>(OnSendMailTaskNowCommandExecuted, CanSendMailTaskNowCommandExecuted);
+            CancelMailTaskCommand = new RelayCommand<MailTask>(OnCancelMailTaskCommandExecuted, CanCancelMailTaskCommandExecuted);
 
             //RecipientsLists
             _RecipientsListsDataService = RecipientsListsDataService;
@@ -97,6 +96,21 @@ namespace MailSender.ViewModel
             get => _Status;
             set => Set(ref _Status, value);
         }
+
+        private DateTime _ScheduleDate = DateTime.Now;
+        public DateTime ScheduleDate
+        {
+            get => _ScheduleDate;
+            set => Set(ref _ScheduleDate, value);
+        }
+
+        private DateTime _ScheduleTime = DateTime.Now;
+        public DateTime ScheduleTime
+        {
+            get => _ScheduleTime;
+            set => Set(ref _ScheduleTime, value);
+        }
+
         #endregion
 
         #region Отчеты
@@ -144,7 +158,12 @@ namespace MailSender.ViewModel
         public MailTask CurrentMailTask
         {
             get => _CurrentMailTask;
-            set => Set(ref _CurrentMailTask, value);
+            set
+            {
+                Set(ref _CurrentMailTask, value);
+                ScheduleDate = _CurrentMailTask.Time.Date;
+                ScheduleTime = _CurrentMailTask.Time;
+            }
         }
 
         //GetAll()
@@ -205,17 +224,57 @@ namespace MailSender.ViewModel
             _MailTasksDataService.Edit(item.id, item);
         }
 
-        #endregion
+        public ICommand ScheduleMailTasksCommand { get; }
+        private bool CanScheduleMailTasksCommandExecuted(MailTask item) => !(item is null);
+        private void OnScheduleMailTasksCommandExecuted(MailTask item)
+        {
+            if (item is null) throw new ArgumentNullException(nameof(item));
+            bool good_status = item.SendStatusEnum != SendStatusEnum.Ok
+                || item.SendStatusEnum != SendStatusEnum.Processing
+                || item.SendStatusEnum != SendStatusEnum.Canceled;
 
-        #region MailTasksSender
-        //private readonly IMailTasksSender _MailTasksSender;
+            if (!good_status) throw new Exception($"Планировщик не принимает задачи со статусом: {Enum.GetName(typeof(SendStatusEnum),item.SendStatusEnum)}");
+            var dpicker = ScheduleDate;
+            var tpicker = ScheduleTime;
+            var schdt = new DateTime(dpicker.Year, dpicker.Month, dpicker.Day, tpicker.Hour, tpicker.Minute, tpicker.Second);
+            item.Time = schdt;
+            item.SendStatusEnum = Data.BaseEntityes.SendStatusEnum.Scheduled;
+            _MailTasksDataService.Edit(item.id, item);
+            GetMailTasks();
+        }
 
-        //public ICommand SendMailTaskNowCommand { get; }
-        //private bool CanSendMailTaskNowCommandExecuted(MailTask item) => !(item is null);
-        //private void OnSendMailTaskNowCommandExecuted(MailTask item)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        public ICommand SendMailTaskNowCommand { get; }
+        private bool CanSendMailTaskNowCommandExecuted(MailTask item) => !(item is null);
+        private async void OnSendMailTaskNowCommandExecuted(MailTask item)
+        {
+            System.Diagnostics.Debug.WriteLine("Запуск немедленной рассылки по задаче.");
+            bool good_status = item.SendStatusEnum != SendStatusEnum.Ok
+                || item.SendStatusEnum != SendStatusEnum.Processing
+                || item.SendStatusEnum != SendStatusEnum.Canceled;
+
+            if (!good_status) throw new Exception($"Невозможно выполнить немедленную рассылку задачи со статусом: {Enum.GetName(typeof(SendStatusEnum), item.SendStatusEnum)}");
+            item.Time = DateTime.Now;
+            //item.SendStatusEnum = Data.BaseEntityes.SendStatusEnum.Processing;
+            _MailTasksDataService.Edit(item.id, item);
+            var db_item = _MailTasksDataService.GetById(item.id);
+            await _MailTasksDataService.SendTaskAsync(db_item);
+            //_MailTasksDataService.Edit(db_item.id, db_item);
+            GetMailTasks();
+        }
+
+        public ICommand CancelMailTaskCommand { get; }
+        private bool CanCancelMailTaskCommandExecuted(MailTask item) => !(item is null);
+        private void OnCancelMailTaskCommandExecuted(MailTask item)
+        {
+            //System.Diagnostics.Debug.WriteLine("Выполнение немедленной рассылки по задаче.");
+            bool good_status = item.SendStatusEnum != SendStatusEnum.Ok
+                || item.SendStatusEnum != SendStatusEnum.Processing;
+            if (item.SendStatusEnum == SendStatusEnum.Processing) throw new Exception($"Из программы невозможно отменить задачу со статусом: {Enum.GetName(typeof(SendStatusEnum), item.SendStatusEnum)}");
+            item.SendStatusEnum = Data.BaseEntityes.SendStatusEnum.Canceled;
+            _MailTasksDataService.Edit(item.id, item);
+            GetMailTasks();
+        }
+
         #endregion
 
         #region Recipients
@@ -369,8 +428,9 @@ namespace MailSender.ViewModel
 
         private void OnSaveRecipientsListsCommandExecuted(RecipientsList item)
         {
-            _RecipientsListsDataService.Edit(item.id, item);
+            CurrentRecipientsList = _RecipientsListsDataService.Edit(item.id, item);
             GetRecipientsLists();
+
         }
 
         #region Work with CurrentRecipientsList
@@ -396,6 +456,7 @@ namespace MailSender.ViewModel
             _RecipientsListsDataService.RemoveRecipientFromList(CurrentRecipientsList.id, item);
             CurrentRecipientsList =
                 _RecipientsListsDataService.GetById(CurrentRecipientsList.id);
+
         }
 
         public ICommand ClearRecipientsFromListCommand { get; }
